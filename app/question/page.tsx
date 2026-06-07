@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 
-export default function Question() {
+function QuestionContent() {
   const [question, setQuestion] = useState("");
   const [mode, setMode] = useState<"meeting" | "thought">("meeting");
 
@@ -126,5 +126,13 @@ export default function Question() {
         </p>
       </section>
     </ExpectumPage>
+  );
+}
+
+export default function Question() {
+  return (
+    <Suspense fallback={null}>
+      <QuestionContent />
+    </Suspense>
   );
 }
