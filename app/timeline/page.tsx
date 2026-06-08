@@ -1,150 +1,209 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
-
-import type {
-  HistoryItem,
-  JourneyReflection,
-  Landmark,
-  TrajectoryItem,
-} from "@/lib/expectumTypes";
+import { supabase } from "@/lib/supabaseClient";
 
 type TimelineItem = {
-  type: "meeting" | "echo" | "reflection" | "trajectory";
+  type: "meeting" | "echo" | "notice" | "direction";
   title: string;
   text: string;
   createdAt: string;
 };
 
+type MeetingRow = {
+  id: string;
+  question: string | null;
+  mode: string | null;
+  created_at: string;
+};
+
+type EchoRow = {
+  id: string;
+  text: string;
+  created_at: string;
+};
+
+type NoticeRow = {
+  id: string;
+  text: string;
+  created_at: string;
+};
+
+type DirectionRow = {
+  id: string;
+  text: string;
+  created_at: string;
+};
+
 export default function Timeline() {
   const [items, setItems] = useState<TimelineItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const history: HistoryItem[] = JSON.parse(
-      localStorage.getItem(EXPECTUM_STORAGE.history) || "[]"
-    );
+    loadTimeline();
+  }, []);
 
-    const landmarks: Landmark[] = JSON.parse(
-      localStorage.getItem(EXPECTUM_STORAGE.landmarks) || "[]"
-    );
+  async function loadTimeline() {
+    setLoading(true);
 
-    const reflections: JourneyReflection[] = JSON.parse(
-      localStorage.getItem(EXPECTUM_STORAGE.journeyReflections) || "[]"
-    );
+    const { data: userData } = await supabase.auth.getUser();
 
-    const trajectories: TrajectoryItem[] = JSON.parse(
-      localStorage.getItem(EXPECTUM_STORAGE.trajectoryHistory) || "[]"
-    );
+    if (!userData.user) {
+      setItems([]);
+      setLoading(false);
+      return;
+    }
+
+    const userId = userData.user.id;
+
+    const { data: meetingsData, error: meetingsError } = await supabase
+      .from("meetings")
+      .select("id, question, mode, created_at")
+      .eq("user_id", userId);
+
+    const { data: echoesData, error: echoesError } = await supabase
+      .from("echoes")
+      .select("id, text, created_at")
+      .eq("user_id", userId);
+
+    const { data: noticesData, error: noticesError } = await supabase
+      .from("journey_notices")
+      .select("id, text, created_at")
+      .eq("user_id", userId);
+
+    const { data: directionsData, error: directionsError } = await supabase
+      .from("directions")
+      .select("id, text, created_at")
+      .eq("user_id", userId);
+
+    if (meetingsError || echoesError || noticesError || directionsError) {
+      console.error("Ajajoone jälgi ei saanud avada.", {
+        meetingsError,
+        echoesError,
+        noticesError,
+        directionsError,
+      });
+
+      setItems([]);
+      setLoading(false);
+      return;
+    }
+
+    const meetings = (meetingsData || []) as MeetingRow[];
+    const echoes = (echoesData || []) as EchoRow[];
+    const notices = (noticesData || []) as NoticeRow[];
+    const directions = (directionsData || []) as DirectionRow[];
 
     const timelineItems: TimelineItem[] = [
-      ...history.map((item) => ({
+      ...meetings.map((item) => ({
         type: "meeting" as const,
         title: item.mode === "thought" ? "Mõttekohtumine" : "Kohtumine",
-        text: item.question,
-        createdAt: item.createdAt,
+        text: item.question || "",
+        createdAt: item.created_at,
       })),
 
-      ...landmarks.map((item) => ({
+      ...echoes.map((item) => ({
         type: "echo" as const,
         title: "Kaja",
         text: item.text,
-        createdAt: item.createdAt,
+        createdAt: item.created_at,
       })),
 
-      ...reflections.map((item) => ({
-        type: "reflection" as const,
+      ...notices.map((item) => ({
+        type: "notice" as const,
         title: "Liikumise märkamine",
         text: item.text,
-        createdAt: item.createdAt,
+        createdAt: item.created_at,
       })),
 
-      ...trajectories.map((item) => ({
-        type: "trajectory" as const,
+      ...directions.map((item) => ({
+        type: "direction" as const,
         title: "Nähtavale tulnud suund",
         text: item.text,
-        createdAt: item.createdAt,
+        createdAt: item.created_at,
       })),
     ];
 
     const sorted = timelineItems.sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() -
-        new Date(a.createdAt).getTime()
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
     setItems(sorted);
-  }, []);
+    setLoading(false);
+  }
 
   return (
     <ExpectumAuthGate>
-    <ExpectumPage
-      footerLinks={[
-        {
-          href: "/path",
-          label: "Teekond",
-          symbol: "path",
-        },
-        
-        {
-          href: "/expectum",
-          label: "Expectum?",
-          symbol: "aim",
-            },
+      <ExpectumPage
+        footerLinks={[
+          {
+            href: "/path",
+            label: "Teekond",
+            symbol: "path",
+          },
+          {
+            href: "/expectum",
+            label: "Expectum?",
+            symbol: "aim",
+          },
+          {
+            href: "/settings",
+            label: "Mälu",
+            symbol: "memory",
+          },
+        ]}
+      >
+        <section className="mx-auto max-w-4xl text-center">
+          <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
+            <ExpectumSymbol name="path" size="header" />
+            <span>Liikumise ajajoon</span>
+          </p>
 
-            {
-          href: "/settings",
-          label: "Mälu",
-          symbol: "memory",
-        },
-      ]}
-    >
-      <section className="mx-auto max-w-4xl text-center">
-        <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
-          <ExpectumSymbol name="path" size="header" />
-          <span>Liikumise ajajoon</span>
-        </p>
+          <h1 className="mb-6 text-4xl font-light md:text-6xl">
+            Teekonna jäljed ajas
+          </h1>
 
-        <h1 className="mb-6 text-4xl font-light md:text-6xl">
-          Teekonna jäljed ajas
-        </h1>
+          <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
+            Siin on kohtumised, kaja, liikumise märkamised ja nähtavale
+            tulnud suunad ühes rahulikus ajajoones.
+          </p>
 
-        <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
-          Siin on kohtumised, kaja, liikumise märkamised ja nähtavale
-          tulnud suunad ühes rahulikus ajajoones.
-        </p>
+          {loading ? (
+            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+              Ajajoone jälgede avamine...
+            </div>
+          ) : items.length === 0 ? (
+            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+              Ajajoone jaoks ei ole veel piisavalt jälgi.
+            </div>
+          ) : (
+            <div className="space-y-8 text-left">
+              {items.map((item, index) => (
+                <div
+                  key={`${item.createdAt}-${item.type}-${index}`}
+                  className="rounded-3xl border border-[#d7b985] bg-white/45 p-8"
+                >
+                  <p className="mb-3 text-sm text-[#8a8278]">
+                    {new Date(item.createdAt).toLocaleDateString("et-EE")}
+                  </p>
 
-        {items.length === 0 ? (
-          <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
-            Ajajoone jaoks ei ole veel piisavalt jälgi.
-          </div>
-        ) : (
-          <div className="space-y-8 text-left">
-            {items.map((item, index) => (
-              <div
-                key={`${item.createdAt}-${index}`}
-                className="rounded-3xl border border-[#d7b985] bg-white/45 p-8"
-              >
-                <p className="mb-3 text-sm text-[#8a8278]">
-                  {new Date(item.createdAt).toLocaleDateString("et-EE")}
-                </p>
+                  <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
+                    {item.title}
+                  </p>
 
-                <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                  {item.title}
-                </p>
-
-                <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
-                  {item.text}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-    </ExpectumPage>
+                  <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
+                    {item.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      </ExpectumPage>
     </ExpectumAuthGate>
   );
 }
