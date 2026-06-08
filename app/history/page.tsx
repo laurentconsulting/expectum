@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
+import { supabase } from "@/lib/supabaseClient";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
@@ -15,11 +16,13 @@ type ThreadMessage = {
   mode?: "meeting" | "thought";
 };
 
-type HistoryItem = {
-  question: string;
-  reflection: string;
-  thread?: ThreadMessage[];
-  createdAt: string;
+type MeetingRow = {
+  id: string;
+  question: string | null;
+  reflection: string | null;
+  thread: ThreadMessage[] | null;
+  mode: "meeting" | "thought" | null;
+  created_at: string;
 };
 
 type SessionGroup = {
@@ -30,34 +33,66 @@ type SessionGroup = {
 
 export default function History() {
   const [sessions, setSessions] = useState<SessionGroup[]>([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const history: HistoryItem[] = JSON.parse(
-      localStorage.getItem(EXPECTUM_STORAGE.history) || "[]"
-    );
+    loadHistory();
+  }, []);
 
+  async function loadHistory() {
+    setLoading(true);
+
+    const { data: userData } = await supabase.auth.getUser();
+
+    if (!userData.user) {
+      setLoading(false);
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("meetings")
+      .select("id, question, reflection, thread, mode, created_at")
+      .eq("user_id", userData.user.id)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Kohtumisi ei saanud Supabase'ist avada.", error);
+      setSessions([]);
+      setLoading(false);
+      return;
+    }
+
+    const meetings = (data || []) as MeetingRow[];
     const sessionMap = new Map<string, SessionGroup>();
 
-    history.forEach((item) => {
-      const messages = item.thread || [
+    meetings.forEach((item) => {
+      const fallbackThread: ThreadMessage[] = [
         {
           role: "user",
-          text: item.question,
-          createdAt: item.createdAt,
-          sessionId: "legacy",
+          text: item.question || "",
+          createdAt: item.created_at,
+          sessionId: item.id,
+          mode: item.mode || "meeting",
         },
         {
           role: "assistant",
-          text: item.reflection,
-          createdAt: item.createdAt,
-          sessionId: "legacy",
+          text: item.reflection || "",
+          createdAt: item.created_at,
+          sessionId: item.id,
+          mode: item.mode || "meeting",
         },
       ];
 
+      const messages =
+        Array.isArray(item.thread) && item.thread.length > 0
+          ? item.thread
+          : fallbackThread;
+
       messages.forEach((message) => {
-        const sessionId = message.sessionId || "legacy";
-        const date = new Date(message.createdAt).toLocaleDateString("et-EE");
+        const sessionId = message.sessionId || item.id;
+        const date = new Date(message.createdAt || item.created_at)
+          .toLocaleDateString("et-EE");
 
         if (!sessionMap.has(sessionId)) {
           sessionMap.set(sessionId, {
@@ -100,7 +135,8 @@ export default function History() {
       );
 
     setSessions(groupedSessions);
-  }, []);
+    setLoading(false);
+  }
 
   function continueSession(session: SessionGroup) {
     localStorage.setItem(EXPECTUM_STORAGE.currentSession, session.sessionId);
@@ -129,12 +165,25 @@ export default function History() {
     return hasThought ? "Mõttekohtumine" : "Kohtumine";
   }
 
-  function clearHistory() {
+  async function clearHistory() {
     const confirmed = window.confirm(
       "Kas soovid kohtumiste jäljed puhastada?"
     );
 
     if (!confirmed) return;
+
+    const { data: userData } = await supabase.auth.getUser();
+
+    if (userData.user) {
+      const { error } = await supabase
+        .from("meetings")
+        .delete()
+        .eq("user_id", userData.user.id);
+
+      if (error) {
+        console.error("Kohtumisi ei saanud Supabase'is puhastada.", error);
+      }
+    }
 
     localStorage.removeItem(EXPECTUM_STORAGE.history);
     setSessions([]);
@@ -142,94 +191,98 @@ export default function History() {
 
   return (
     <ExpectumAuthGate>
-    <ExpectumPage
-      footerLinks={[
-        {
-          href: "/settings",
-          label: "Mälu",
-          symbol: "memory",
-        },
-        {
-          href: "/landmarks",
-          label: "Kaja",
-          symbol: "echo",
-        },
-        {
-          href: "/expectum",
-          label: "Expectum?",
-          symbol: "aim",
-        },
-      ]}
-    >
-      <section className="mx-auto max-w-4xl text-center">
-        <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
-          <ExpectumSymbol name="memory" size="header" />
-          <span>Mälu</span>
-        </p>
+      <ExpectumPage
+        footerLinks={[
+          {
+            href: "/settings",
+            label: "Mälu",
+            symbol: "memory",
+          },
+          {
+            href: "/landmarks",
+            label: "Kaja",
+            symbol: "echo",
+          },
+          {
+            href: "/expectum",
+            label: "Expectum?",
+            symbol: "aim",
+          },
+        ]}
+      >
+        <section className="mx-auto max-w-4xl text-center">
+          <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
+            <ExpectumSymbol name="memory" size="header" />
+            <span>Mälu</span>
+          </p>
 
-        <h1 className="mb-12 text-4xl font-light md:text-6xl">
-          Minu kohtumised
-        </h1>
+          <h1 className="mb-12 text-4xl font-light md:text-6xl">
+            Minu kohtumised
+          </h1>
 
-        {sessions.length === 0 ? (
-          <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
-            Mälus ei ole veel kohtumisi.
-          </div>
-        ) : (
-          <div className="space-y-12 text-left">
-            {sessions.map((session, index) => (
-              <div key={session.sessionId}>
-                <p className="mb-3 text-sm text-[#8a8278]">
-                  {session.date}
-                </p>
+          {loading ? (
+            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+              Kohtumiste jälgede avamine...
+            </div>
+          ) : sessions.length === 0 ? (
+            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+              Mälus ei ole veel kohtumisi.
+            </div>
+          ) : (
+            <div className="space-y-12 text-left">
+              {sessions.map((session, index) => (
+                <div key={session.sessionId}>
+                  <p className="mb-3 text-sm text-[#8a8278]">
+                    {session.date}
+                  </p>
 
-                <h2 className="mb-2 text-2xl font-light">
-                  Kohtumine {sessions.length - index}
-                </h2>
+                  <h2 className="mb-2 text-2xl font-light">
+                    Kohtumine {sessions.length - index}
+                  </h2>
 
-                <p className="mb-6 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                  {getSessionMode(session)}
-                </p>
+                  <p className="mb-6 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
+                    {getSessionMode(session)}
+                  </p>
 
-                <div className="max-h-[620px] overflow-y-auto rounded-3xl border border-[#d7b985] bg-white/45 p-6">
-                  <div className="space-y-8">
-                    {session.messages.map((message, messageIndex) => (
-                      <div key={`${message.createdAt}-${messageIndex}`}>
-                        <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                          {message.role === "user" ? "Sina" : "Aim"}
-                        </p>
+                  <div className="max-h-[620px] overflow-y-auto rounded-3xl border border-[#d7b985] bg-white/45 p-6">
+                    <div className="space-y-8">
+                      {session.messages.map((message, messageIndex) => (
+                        <div key={`${message.createdAt}-${messageIndex}`}>
+                          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
+                            {message.role === "user" ? "Sina" : "Aim"}
+                          </p>
 
-                        <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
-                          {message.text}
-                        </p>
-                      </div>
-                    ))}
+                          <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
+                            {message.text}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={() => continueSession(session)}
+                    className="mt-6 rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
+                  >
+                    Ava kohtumine
+                  </button>
                 </div>
+              ))}
+            </div>
+          )}
 
-                <button
-                  type="button"
-                  onClick={() => continueSession(session)}
-                  className="mt-6 rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-                >
-                  Ava kohtumine
-                </button>
-              </div>
-            ))}
+          <div className="mt-12 flex justify-center">
+            <button
+              type="button"
+              onClick={clearHistory}
+              className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
+            >
+              Puhasta kohtumised
+            </button>
           </div>
-        )}
-
-        <div className="mt-12 flex justify-center">
-          <button
-            type="button"
-            onClick={clearHistory}
-            className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
-          >
-            Puhasta kohtumised
-          </button>
-        </div>
-      </section>
-    </ExpectumPage>
+        </section>
+      </ExpectumPage>
     </ExpectumAuthGate>
   );
 }
