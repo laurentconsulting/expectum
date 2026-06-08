@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
 import type {
   HistoryItem,
@@ -88,6 +89,7 @@ export default function Path() {
   }, []);
 
   return (
+    <ExpectumAuthGate>
     <ExpectumPage
       footerLinks={[
         {
@@ -248,5 +250,6 @@ export default function Path() {
         </div>
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
   );
 }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
 type ThreadMessage = {
   role: "user" | "assistant";
@@ -140,6 +141,7 @@ export default function History() {
   }
 
   return (
+    <ExpectumAuthGate>
     <ExpectumPage
       footerLinks={[
         {
@@ -228,5 +230,6 @@ export default function History() {
         </div>
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
   );
 }

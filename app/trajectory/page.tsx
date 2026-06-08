@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
 type StoredTextItem = {
   question?: string;
@@ -116,11 +117,12 @@ export default function Trajectory() {
   }, []);
 
   return (
-    <ExpectumPage
-      footerLinks={[
-        {
-          href: "/themes",
-          label: "Teema",
+    <ExpectumAuthGate>
+          <ExpectumPage
+        footerLinks={[
+          {
+            href: "/themes",
+            label: "Teema",
           symbol: "theme",
         },
         {
@@ -181,5 +183,6 @@ export default function Trajectory() {
         </div>
       </section>
     </ExpectumPage>
+      </ExpectumAuthGate>
   );
 }

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import { supabase } from "@/lib/supabaseClient";
 
 import type {
   ThreadMessage,
@@ -73,6 +74,28 @@ export default function Reflection() {
     );
   }
 
+  async function saveMeetingToSupabase(historyItem: HistoryItem) {
+    const { data } = await supabase.auth.getUser();
+
+    if (!data.user) {
+      console.warn("Kohtumist ei salvestatud pilve, sest kasutaja puudub.");
+      return;
+    }
+
+    const { error } = await supabase.from("meetings").insert({
+      user_id: data.user.id,
+      question: historyItem.question,
+      reflection: historyItem.reflection,
+      thread: historyItem.thread || [],
+      mode: historyItem.mode || "meeting",
+      created_at: historyItem.createdAt,
+    });
+
+    if (error) {
+      console.error("Kohtumist ei saanud Supabase'i salvestada.", error);
+    }
+  }
+
   async function generateReflection(
     questionText: string,
     currentThread: ThreadMessage[]
@@ -135,7 +158,11 @@ export default function Reflection() {
         EXPECTUM_STORAGE.history,
         JSON.stringify([historyItem, ...existingHistory])
       );
+
+      await saveMeetingToSupabase(historyItem);
     } catch (error) {
+      console.error(error);
+
       const fallback =
         "Praegu ei saanud peegeldust avada. Peatu hetkeks ja proovi uuesti.";
 
@@ -208,7 +235,7 @@ export default function Reflection() {
     generateReflection(followUp, updatedThread);
   }
 
-  function toggleLandmark(message: ThreadMessage, index: number) {
+  async function toggleLandmark(message: ThreadMessage, index: number) {
     const existing: Landmark[] = JSON.parse(
       localStorage.getItem(EXPECTUM_STORAGE.landmarks) || "[]"
     );
@@ -245,6 +272,21 @@ export default function Reflection() {
 
     localStorage.setItem(EXPECTUM_STORAGE.landmarks, JSON.stringify(updated));
     setLandmarkIds(updated.map((item) => item.id));
+
+    const { data } = await supabase.auth.getUser();
+
+    if (!data.user) return;
+
+    const { error } = await supabase.from("echoes").insert({
+      user_id: data.user.id,
+      text: newLandmark.text,
+      question: newLandmark.question,
+      created_at: newLandmark.createdAt,
+    });
+
+    if (error) {
+      console.error("Kaja ei saanud Supabase'i salvestada.", error);
+    }
   }
 
   async function toggleSharedInsight(message: ThreadMessage, index: number) {
@@ -258,7 +300,7 @@ export default function Reflection() {
     if (isShared) return;
 
     const confirmed = window.confirm(
-      "Kas soovid selle kaja anonüümselt kinnitamiseks esitada? Avalikuks muutub see alles pärast ülevaatamist."
+      "Kas soovid selle kaja anonüümselt jagamiseks esitada?"
     );
 
     if (!confirmed) return;
@@ -332,9 +374,9 @@ export default function Reflection() {
               const isShared = sharedIds.includes(message.createdAt);
 
               return (
-                <div key={index}>
+                <div key={`${message.createdAt}-${index}`}>
                   <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    {message.role === "user" ? "Sina" : "Expectum"}
+                    {message.role === "user" ? "Sina" : "Aim"}
                   </p>
 
                   <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
@@ -394,7 +436,7 @@ export default function Reflection() {
                   value={followUp}
                   onChange={(event) => setFollowUp(event.target.value)}
                   className="min-h-32 w-full rounded-2xl border border-[#d7b985] bg-white/45 p-5 text-lg leading-relaxed outline-none transition focus:border-[#b78a4a] focus:bg-white/65"
-                  placeholder="Kirjuta siia, kui peegeldus avas uue vastuse või küsimuse..."
+                  placeholder="Kirjuta siia, kui kohtumine jätkub..."
                 />
 
                 <button

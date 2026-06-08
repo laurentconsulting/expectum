@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
 type TrajectoryItem = {
   text: string;
@@ -51,6 +52,7 @@ export default function TrajectoryHistory() {
   }
 
   return (
+    <ExpectumAuthGate>
     <ExpectumPage
       footerLinks={[
         {
@@ -126,5 +128,6 @@ export default function TrajectoryHistory() {
         </div>
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
   );
 }

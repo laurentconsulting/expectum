@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
 type Landmark = {
   id: string;
@@ -48,12 +49,13 @@ export default function Landmarks() {
   }
 
   return (
-    <ExpectumPage
-      footerLinks={[
-        {
-          href: "/history",
-          label: "Kohtumised",
-          symbol: "meeting",
+    <ExpectumAuthGate>
+      <ExpectumPage
+        footerLinks={[
+          {
+            href: "/history",
+            label: "Kohtumised",
+            symbol: "meeting",
         },
         {
           href: "/settings",
@@ -119,5 +121,6 @@ export default function Landmarks() {
         )}
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
   );
 }

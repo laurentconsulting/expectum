@@ -4,6 +4,7 @@ import { useState } from "react";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
 export default function Settings() {
   const [message, setMessage] = useState("");
@@ -28,6 +29,7 @@ export default function Settings() {
   }
 
   return (
+     <ExpectumAuthGate>
     <ExpectumPage
       footerLinks={[
         {
@@ -169,5 +171,7 @@ export default function Settings() {
         {message && <p className="mt-8 text-[#8b642f]">{message}</p>}
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
+  
   );
 }

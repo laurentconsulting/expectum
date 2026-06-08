@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+
 
 type JourneyReflection = {
   text: string;
@@ -36,6 +38,7 @@ export default function JourneyReflections() {
   }
 
   return (
+    <ExpectumAuthGate>
     <ExpectumPage
       footerLinks={[
         {
@@ -107,5 +110,6 @@ export default function JourneyReflections() {
         </div>
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
   );
 }

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
 export default function Statistics() {
   const [stats, setStats] = useState({
@@ -72,6 +73,7 @@ export default function Statistics() {
   }, []);
 
   return (
+    <ExpectumAuthGate>
     <ExpectumPage
       footerLinks={[
         {
@@ -134,5 +136,6 @@ export default function Statistics() {
         </div>
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
   );
 }

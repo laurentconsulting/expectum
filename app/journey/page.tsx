@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
 type StoredMessage = {
   sessionId?: string;
@@ -159,12 +160,13 @@ export default function Journey() {
   }, []);
 
   return (
-    <ExpectumPage
-      footerLinks={[
-        {
-          href: "/path",
-          label: "Teekond",
-          symbol: "path",
+    <ExpectumAuthGate>
+      <ExpectumPage
+        footerLinks={[
+          {
+            href: "/path",
+            label: "Teekond",
+            symbol: "path",
         },
         {
           href: "/attunement-question",
@@ -213,5 +215,6 @@ export default function Journey() {
         </div>
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
   );
 }

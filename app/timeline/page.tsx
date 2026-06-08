@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
 import type {
   HistoryItem,
@@ -79,6 +80,7 @@ export default function Timeline() {
   }, []);
 
   return (
+    <ExpectumAuthGate>
     <ExpectumPage
       footerLinks={[
         {
@@ -143,5 +145,6 @@ export default function Timeline() {
         )}
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
   );
 }
