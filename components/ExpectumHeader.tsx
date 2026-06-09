@@ -1,10 +1,14 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import type { User } from "@supabase/supabase-js";
+import AuthStatus from "@/components/AuthStatus";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 
 export default function ExpectumHeader() {
   const pathname = usePathname();
+  const [user, setUser] = useState<User | null>(null);
 
   const isActive = (path: string) => {
     if (path === "/path") {
@@ -50,21 +54,49 @@ export default function ExpectumHeader() {
         </a>
 
         <nav className="flex flex-wrap items-center justify-center gap-6 text-xs uppercase tracking-[0.25em]">
-  <a href="/attunement" className={linkClass("/attunement")}>
-    <ExpectumSymbol name="meeting" size="header" />
-    <span>Kohtumine</span>
-  </a>
+          {!user ? (
+            <>
+              <a href="/expectum" className={linkClass("/expectum")}>
+                <ExpectumSymbol name="aim" size="header" />
+                <span>Expectum</span>
+              </a>
 
-  <a href="/path" className={linkClass("/path")}>
-    <ExpectumSymbol name="path" size="header" />
-    <span>Teekond</span>
-  </a>
+              <a
+                href="/expectum-language"
+                className={linkClass("/expectum-language")}
+              >
+                <ExpectumSymbol name="theme" size="header" />
+                <span>Keel</span>
+              </a>
 
-  <a href="/settings" className={linkClass("/settings")}>
-    <ExpectumSymbol name="memory" size="header" />
-    <span>Mälu</span>
-  </a>
-</nav>
+              <a href="/symbols" className={linkClass("/symbols")}>
+                <ExpectumSymbol name="echo" size="header" />
+                <span>Sümbolid</span>
+              </a>
+
+              <AuthStatus onUserChange={setUser} />
+            </>
+          ) : (
+            <>
+              <a href="/attunement" className={linkClass("/attunement")}>
+                <ExpectumSymbol name="meeting" size="header" />
+                <span>Kohtumine</span>
+              </a>
+
+              <a href="/path" className={linkClass("/path")}>
+                <ExpectumSymbol name="path" size="header" />
+                <span>Teekond</span>
+              </a>
+
+              <a href="/settings" className={linkClass("/settings")}>
+                <ExpectumSymbol name="memory" size="header" />
+                <span>Mälu</span>
+              </a>
+
+              <AuthStatus onUserChange={setUser} />
+            </>
+          )}
+        </nav>
       </div>
     </header>
   );
