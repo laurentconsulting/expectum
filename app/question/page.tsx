@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
 function QuestionContent() {
   const [question, setQuestion] = useState("");
@@ -60,6 +61,7 @@ function QuestionContent() {
   }
 
   return (
+    <ExpectumAuthGate>
     <ExpectumPage>
       <section className="mx-auto max-w-3xl text-center">
         <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
@@ -126,6 +128,7 @@ function QuestionContent() {
         </p>
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
   );
 }
 

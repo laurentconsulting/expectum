@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
 type SharedInsight = {
   id: string;
@@ -37,6 +38,7 @@ export default function SharedInsights() {
   }, []);
 
   return (
+    <ExpectumAuthGate>
     <ExpectumPage
       footerLinks={[
         {
@@ -105,5 +107,6 @@ export default function SharedInsights() {
         )}
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
   );
 }

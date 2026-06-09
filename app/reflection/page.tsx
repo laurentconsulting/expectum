@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 import { supabase } from "@/lib/supabaseClient";
 
 import type {
@@ -345,11 +346,12 @@ export default function Reflection() {
   }
 
   return (
-    <ExpectumPage className="bg-[#f7f1e8]">
-      <section className="mx-auto w-full max-w-4xl">
-        <div className="text-center">
-          <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
-            <ExpectumSymbol name="meeting" size="header" />
+    <ExpectumAuthGate>
+      <ExpectumPage className="bg-[#f7f1e8]">
+        <section className="mx-auto w-full max-w-4xl">
+          <div className="text-center">
+            <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
+              <ExpectumSymbol name="meeting" size="header" />
             <span>Kohtumine</span>
           </p>
 
@@ -476,13 +478,14 @@ export default function Reflection() {
           )}
 
           <a
-            href="/return"
+            href="/pause"
             className="rounded-full border border-[#d8d1c7] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#6d655d]"
           >
-            Eemaldu
+            Puhka
           </a>
         </div>
       </section>
     </ExpectumPage>
+    </ExpectumAuthGate>
   );
 }

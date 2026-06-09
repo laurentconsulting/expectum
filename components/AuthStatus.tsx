@@ -40,24 +40,24 @@ async function signOut() {
   window.location.href = "/return";
 }
 
-  if (!user) {
-    return (
-      <a
-        href="/enter"
-        className="expectum-soft-pulse inline-flex items-center gap-2 text-[#8a8278] transition-colors duration-500 hover:text-[#8b642f]"
-      >
-        <span>Ava kohtumine</span>
-      </a>
-    );
-  }
-
+if (!user) {
   return (
+    <a
+      href="/enter"
+      className="expectum-soft-pulse inline-flex items-center gap-2 text-[#8a8278] transition-colors duration-500 hover:text-[#8b642f]"
+    >
+      <span>Ava kohtumine</span>
+    </a>
+  );
+}
+
+return (
   <button
     type="button"
     onClick={signOut}
     className="expectum-soft-pulse inline-flex items-center gap-2 text-[#8a8278] transition-colors duration-500 hover:text-[#8b642f]"
   >
-    Puhka
+    Välju
   </button>
 );
 }

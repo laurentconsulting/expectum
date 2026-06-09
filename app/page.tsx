@@ -38,33 +38,10 @@ export default function Home() {
         </p>
 
         <p className="mx-auto mb-14 max-w-2xl text-base leading-relaxed text-[#6d655d] md:text-lg">
-          Kohtumise alustamiseks loo konto või sisene.
+          Kohtumise alustamiseks ava kohtumine.
           Mälu hoiab sinu kohtumiste jälgi ainult sinu teekonna jaoks.
         </p>
-
-        <div className="flex flex-col flex-wrap justify-center gap-4 md:flex-row">
-          <a
-            href="/enter"
-            className="rounded-full border border-[#c9a36a] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-          >
-            Sisene
-          </a>
-
-          <a
-            href="/enter?mode=create"
-            className="rounded-full border border-[#c9a36a] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-          >
-            Loo konto
-          </a>
-
-          <a
-            href="/expectum"
-            className="rounded-full border border-[#d8d1c7] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
-          >
-            Tutvu
-          </a>
-        </div>
-
+  
         <p className="mt-20 text-sm text-[#8a8278]">
           Alustada võib sellest, mis Sind puudutab.
         </p>
