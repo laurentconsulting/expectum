@@ -74,7 +74,7 @@ Vaata ainult viimase aja nähtavat liikumist:
 - korduvad teemad.
 
 Kaja on see, mis jääb kohtumisest kõlama.
-Teema toob nähtavale kordumised.
+Teema võib kordumistes nähtavale tulla.
 Suund võib avaneda kordumistes nähtavale tulnud teemadest.
 
 Ära tee suuri järeldusi.
@@ -104,7 +104,7 @@ milline võimalik liikumine tekstides nähtavale tuleb.
 
 2. Mis tugevneb
 Too esile 1–3 nähtavat tugevnevat joont.
-Ära muuda neid inimese määratluseks.
+Ära kasuta neid inimese kirjeldamiseks tervikuna.
 
 3. Mis vaibub või jääb taha
 Kirjelda ettevaatlikult,

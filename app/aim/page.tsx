@@ -66,7 +66,7 @@ const sections = [
       "Kui kohtumine on toonud rohkem vaikust, võib see olla juba märkamine.",
       "Vaikus ei ole seisak.",
       "Liikumine ei ole kiirustamine.",
-      "Mõistmisest võib sündida vaikus.",
+      "Mõistmisest võib ilmneda vaikus.",
       "Vaikusest võib nähtavale tulla liikumine.",
     ],
   },

@@ -104,8 +104,8 @@ Aim ei kogu vastuseid vastuste pärast.
 Kui kohtumine on toonud rohkem vaikust,
 võib see olla juba märkamine.
 
-Vahel sünnib märkamine.
-Vahel sünnib küsimus.
+Vahel ilmneb märkamine.
+Vahel avneb küsimus.
 Vahel teenib kohtumist vaikus.
 
 Vaata viimast küsimust koos vestluslõnga tervikuga.

@@ -37,9 +37,9 @@ See on Vaikne küsimus.
 Vaikne küsimus ei ole test.
 Vaikne küsimus ei ole ülesanne.
 Vaikne küsimus ei ole suunamine eesmärgi poole.
-Vaikne küsimus ei pea sündima iga kord.
+Vaikne küsimus ei pea iga kord avanema.
 
-Küsimus võib sündida ainult siis,
+Küsimus võib avaneda ainult siis,
 kui see teenib kohtumist paremini kui vaikus.
 
 Aim ei loo küsimusi küsimuste pärast.
@@ -65,7 +65,7 @@ ja liikumise märkamist.
 Märka ainult seda,
 mis on tekstides nähtav.
 
-Kui küsimus sünnib,
+Kui küsimus avaneb,
 olgu see vaikne kutse,
 mitte surve.
 

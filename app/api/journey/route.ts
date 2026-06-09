@@ -78,7 +78,7 @@ Märka ettevaatlikult:
 - kas muutust on võimalik märgata;
 - kas märkamises endas on midagi muutunud;
 - mis on vaibunud;
-- mis on esile kerkinud;
+- mis on nähtavale tulnud;
 - kas vaikust on rohkem;
 - kas liikumine on muutunud rahulikumaks või selgemaks.
 
@@ -90,14 +90,14 @@ võid märgata, kas uus märkamine erineb varasemast.
 
 Kui muutust ei ole võimalik märgata,
 ütle lühidalt:
-"Selget muutust ei ole veel näha."
+"Selget muutust ei ole veel nähtavale tulnud."
 
 Vastus koosneb viiest osast:
 
 1. Liikumise märkamine
 Lühike, inimlik ja rahulik tervikvaade.
 
-2. Korduvad teemad
+2. Nähtavale tulnud teemad
 Too esile 2–4 korduvat teemat.
 Ära muuda neid inimese määratluseks.
 

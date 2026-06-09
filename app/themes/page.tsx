@@ -152,9 +152,9 @@ export default function Themes() {
           </h1>
 
           <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
-            Teema ei määratle inimest. Ta aitab märgata, mis kohtumistes kordub
-            ja võib avada nähtavale tulnud suuna.
-          </p>
+  Teema ei ütle, kes inimene on. Ta aitab märgata, mis kohtumistes
+  kordub ja võib avada nähtavale tulnud suuna.
+</p>
 
           {loading ? (
             <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
