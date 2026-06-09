@@ -36,10 +36,13 @@ export default function AuthStatus({ onUserChange }: AuthStatusProps) {
   }, [onUserChange]);
 
 async function signOut() {
-  await supabase.auth.signOut();
-  window.location.href = "/return";
-}
+  setUser(null);
+  onUserChange?.(null);
 
+  await supabase.auth.signOut();
+
+  window.location.replace("/return");
+}
 if (!user) {
   return (
     <a

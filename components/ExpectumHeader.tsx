@@ -60,7 +60,18 @@ export default function ExpectumHeader() {
         ? "text-[#8b642f]"
         : "text-[#8a8278] hover:text-[#8b642f]"
     }`;
+  const publicPaths = [
+    "/",
+    "/expectum",
+    "/expectum-language",
+    "/symbols",
+    "/aim",
+    "/human-and-ai",
+    "/enter",
+    "/return",
+  ];
 
+  const isPublicPath = publicPaths.includes(pathname);
   return (
     <header className="w-full pt-8 pb-4">
       <div className="mx-auto flex max-w-5xl flex-col items-center">
@@ -72,7 +83,7 @@ export default function ExpectumHeader() {
           <span>Expectum</span>
         </a>
 
-        {user && (
+        {user && !isPublicPath && (
           <nav className="mt-7 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs uppercase tracking-[0.28em]">
             <a href="/attunement" className={linkClass("/attunement")}>
               <ExpectumSymbol name="meeting" size="header" />

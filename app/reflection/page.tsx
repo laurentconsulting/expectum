@@ -16,7 +16,7 @@ import type {
 } from "@/lib/expectumTypes";
 
 export default function Reflection() {
-  const [question, setQuestion] = useState("");
+  const [question, setQuestion] = useState("Aim");
   const [thread, setThread] = useState<ThreadMessage[]>([]);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -424,7 +424,7 @@ export default function Reflection() {
 
             {loading && (
               <p className="text-lg leading-relaxed text-[#4f4942]">
-                "Kohtumine avaneb..."
+                Kohtumine avaneb...
               </p>
             )}
 

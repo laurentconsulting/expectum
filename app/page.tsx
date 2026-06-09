@@ -11,9 +11,9 @@ export default function Home() {
           symbol: "aim",
         },
         {
-          href: "/aim",
-          label: "Aim",
-          symbol: "aim",
+          href: "/expectum-language",
+          label: "Keel",
+          symbol: "theme",
         },
         {
           href: "/symbols",
@@ -34,14 +34,32 @@ export default function Home() {
 
         <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-[#5f574f] md:text-2xl">
           Expectum on kohtumise ruum.
-          Siin saab inimene peatuda küsimuse, kaja, teekonna ja nähtavale tulnud suuna juures.
         </p>
 
         <p className="mx-auto mb-14 max-w-2xl text-base leading-relaxed text-[#6d655d] md:text-lg">
-          Kohtumise alustamiseks ava kohtumine.
-          Mälu hoiab sinu kohtumiste jälgi ainult sinu teekonna jaoks.
+          Siin võib avaneda küsimus.
+          <br />
+          Siin võib jääda kõlama Kaja.
+          <br />
+          Siin võib nähtavale tulla Suund.
         </p>
-  
+
+        <div className="flex flex-col flex-wrap justify-center gap-4 md:flex-row">
+          <a
+            href="/enter"
+            className="rounded-full border border-[#c9a36a] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
+          >
+            Ava kohtumine
+          </a>
+
+          <a
+            href="/enter?mode=create"
+            className="rounded-full border border-[#d8d1c7] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
+          >
+            Saa osaliseks
+          </a>
+        </div>
+
         <p className="mt-20 text-sm text-[#8a8278]">
           Alustada võib sellest, mis Sind puudutab.
         </p>
