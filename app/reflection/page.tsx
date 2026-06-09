@@ -366,7 +366,7 @@ export default function Reflection() {
           className="mb-8 max-h-[640px] overflow-y-auto rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left"
         >
           <p className="mb-6 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-            Vestluslõng
+            Kohtumine
           </p>
 
           <div className="space-y-8">
@@ -378,7 +378,7 @@ export default function Reflection() {
               return (
                 <div key={`${message.createdAt}-${index}`}>
                   <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    {message.role === "user" ? "Sina" : "Aim"}
+                    {message.role === "user" ? "Sina" : ""}
                   </p>
 
                   <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
@@ -424,7 +424,7 @@ export default function Reflection() {
 
             {loading && (
               <p className="text-lg leading-relaxed text-[#4f4942]">
-                Häälestumine peegelduseks...
+                "Kohtumine avaneb..."
               </p>
             )}
 
@@ -446,7 +446,7 @@ export default function Reflection() {
                   onClick={sendFollowUp}
                   className="mt-6 rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
                 >
-                  Jätka peegeldust
+                  Jätka kohtumist
                 </button>
               </div>
             )}

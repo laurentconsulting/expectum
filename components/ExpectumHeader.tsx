@@ -62,18 +62,18 @@ export default function ExpectumHeader() {
     }`;
 
   return (
-    <header className="w-full py-8">
-      <div className="mx-auto flex max-w-5xl flex-col items-center gap-5">
+    <header className="w-full pt-8 pb-4">
+      <div className="mx-auto flex max-w-5xl flex-col items-center">
         <a
           href="/"
-          className="expectum-breathing inline-flex items-center gap-3 text-sm uppercase tracking-[0.5em] text-[#8b642f] transition-opacity duration-500 hover:opacity-70"
+          className="expectum-breathing inline-flex items-center gap-3 text-sm uppercase tracking-[0.55em] text-[#8b642f] transition-opacity duration-500 hover:opacity-70"
         >
           <ExpectumSymbol name="aim" size="header" />
           <span>Expectum</span>
         </a>
 
         {user && (
-          <nav className="flex flex-wrap items-center justify-center gap-6 text-xs uppercase tracking-[0.25em]">
+          <nav className="mt-7 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs uppercase tracking-[0.28em]">
             <a href="/attunement" className={linkClass("/attunement")}>
               <ExpectumSymbol name="meeting" size="header" />
               <span>Kohtumine</span>
