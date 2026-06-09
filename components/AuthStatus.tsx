@@ -35,10 +35,10 @@ export default function AuthStatus({ onUserChange }: AuthStatusProps) {
     };
   }, [onUserChange]);
 
-  async function signOut() {
-    await supabase.auth.signOut();
-    window.location.href = "/";
-  }
+async function signOut() {
+  await supabase.auth.signOut();
+  window.location.href = "/return";
+}
 
   if (!user) {
     return (
@@ -46,18 +46,18 @@ export default function AuthStatus({ onUserChange }: AuthStatusProps) {
         href="/enter"
         className="expectum-soft-pulse inline-flex items-center gap-2 text-[#8a8278] transition-colors duration-500 hover:text-[#8b642f]"
       >
-        <span>Sisene</span>
+        <span>Ava kohtumine</span>
       </a>
     );
   }
 
   return (
-    <button
-      type="button"
-      onClick={signOut}
-      className="expectum-soft-pulse inline-flex items-center gap-2 text-[#8a8278] transition-colors duration-500 hover:text-[#8b642f]"
-    >
-      Välju
-    </button>
-  );
+  <button
+    type="button"
+    onClick={signOut}
+    className="expectum-soft-pulse inline-flex items-center gap-2 text-[#8a8278] transition-colors duration-500 hover:text-[#8b642f]"
+  >
+    Puhka
+  </button>
+);
 }

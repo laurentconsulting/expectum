@@ -3,33 +3,44 @@ import ExpectumSymbol from "@/components/ExpectumSymbol";
 
 export default function ReturnRoom() {
   return (
-    <ExpectumPage className="bg-[#f7f1e8]">
+    <ExpectumPage
+      className="bg-[#f7f1e8]"
+      footerLinks={[
+        {
+          href: "/expectum",
+          label: "Expectum",
+          symbol: "aim",
+        },
+      ]}
+    >
       <section className="mx-auto w-full max-w-3xl text-center">
         <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
           <ExpectumSymbol name="meeting" size="header" />
-          <span>Eemaldus</span>
+          <span>Puhkus</span>
         </p>
 
         <h1 className="mb-10 text-4xl font-light leading-tight md:text-6xl">
-          Liikumine jätkub ka siis, kui sõnad peatuvad.
+          Kohtumine võib puhata.
         </h1>
 
         <p className="mb-12 text-lg leading-relaxed text-[#5f574f] md:text-2xl">
-          Oled alati oodatud tagasi.
+          Mõnikord vajab küsimus aega. Mõnikord vajab vaikust ka inimene.
         </p>
 
         <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-lg leading-relaxed text-[#4f4942]">
+          <p className="mb-6">Teekonna jäljed on hoitud.</p>
+
           <p>
-            Mõni küsimus avaneb hiljem.
+            Kui soovid, võid kohtumise hiljem uuesti avada.
           </p>
         </div>
 
         <div className="mt-12 flex flex-col justify-center gap-4 md:flex-row">
           <a
-            href="/attunement"
+            href="/enter"
             className="rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
           >
-            Ava häälestus
+            Ava kohtumine
           </a>
 
           <a
@@ -41,7 +52,7 @@ export default function ReturnRoom() {
         </div>
 
         <p className="mt-20 text-sm text-[#8a8278]">
-          Kohtumine jääb avatuks.
+          Kõik ei pea avanema korraga.
         </p>
       </section>
     </ExpectumPage>
