@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function Enter() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,6 +16,12 @@ export default function Enter() {
   const [mode, setMode] = useState<"enter" | "create">("enter");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("mode") === "create") {
+      setMode("create");
+    }
+  }, [searchParams]);
 
   async function enter() {
     if (!email.trim() || !password.trim()) {
@@ -52,7 +59,15 @@ export default function Enter() {
     }
 
     setLoading(false);
-    router.push("/settings");
+
+    if (mode === "create") {
+      setMessage(
+        "Konto on loodud. Kui e-posti kinnitamine on sisse lülitatud, kinnita kiri ja sisene seejärel uuesti."
+      );
+      return;
+    }
+
+    router.push("/attunement");
   }
 
   return (
@@ -60,24 +75,24 @@ export default function Enter() {
       footerLinks={[
         {
           href: "/expectum",
-          label: "Expectum?",
+          label: "Expectum",
           symbol: "aim",
         },
       ]}
     >
       <section className="mx-auto w-full max-w-3xl text-center">
         <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
-          <ExpectumSymbol name="memory" size="header" />
+          <ExpectumSymbol name="meeting" size="header" />
           <span>Sisenemine</span>
         </p>
 
         <h1 className="mb-8 text-4xl font-light leading-tight md:text-6xl">
-          Sisene, et mälu saaks jälgi hoida.
+          Sisene, et kohtumine saaks jätkuda.
         </h1>
 
         <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
           Kasutajakonto seob kohtumised, kaja ja teekonna jäljed ühe inimesega.
-          Mälu ei määra tähendust. Ta hoiab järjepidevust.
+          Mälu hoiab järjepidevust ega määra tähendust.
         </p>
 
         <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
