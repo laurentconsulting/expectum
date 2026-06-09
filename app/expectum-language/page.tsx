@@ -1,40 +1,56 @@
 import ExpectumPage from "@/components/ExpectumPage";
+import ExpectumSymbol from "@/components/ExpectumSymbol";
 
-const words = [
+type SymbolId =
+  | "meeting"
+  | "echo"
+  | "theme"
+  | "direction"
+  | "path"
+  | "memory"
+  | "aim";
+
+type WordItem = {
+  id: SymbolId;
+  name: string;
+  text: string;
+};
+
+const words: WordItem[] = [
   {
-    symbol: "○",
+    id: "meeting",
     name: "Kohtumine",
     text: "Kohtumine loob ruumi, kus küsimus võib avaneda.",
   },
   {
-    symbol: "◐",
+    id: "echo",
     name: "Kaja",
-    text: "Kaja on see, mis jääb pärast kohtumist kõlama.",
+    text: "Kaja on see, mis jääb kohtumisest kõlama.",
   },
   {
-    symbol: "✦",
+    id: "theme",
     name: "Teema",
-    text: "Teema on see, mis hakkab korduma.",
+    text: "Teema on see, mis võib kordumistes nähtavale tulla.",
   },
   {
-    symbol: "△",
+    id: "direction",
     name: "Suund",
-    text: "Suund viitab liikumisele, mitte sihtkohale.",
+    text: "Suund on nähtavale tulnud võimalik liikumine.",
   },
   {
-    symbol: "∞",
+    id: "path",
     name: "Teekond",
-    text: "Teekond on elav liikumine, mis muutub koos inimesega.",
+    text: "Teekond tuleb nähtavale varasemate sammude jälgedes.",
   },
   {
-    symbol: "□",
+    id: "memory",
     name: "Mälu",
     text: "Mälu aitab hoida kohtumiste ja teekonna järjepidevust.",
   },
   {
-    symbol: "✧",
+    id: "aim",
     name: "Aim",
-    text: "Aim hoiab ruumi, kus inimene saab kohtuda iseenda küsimustega.",
+    text: "Aim hoiab ruumi kohtumisele.",
   },
 ];
 
@@ -49,14 +65,15 @@ export default function ExpectumLanguage() {
         },
         {
           href: "/expectum",
-          label: "Expectum?",
+          label: "Expectum",
           symbol: "aim",
         },
       ]}
     >
       <section className="mx-auto max-w-4xl text-center">
-        <p className="mb-10 tracking-[0.4em] text-xs uppercase text-[#b78a4a]">
-          ✧ Expectumi vormiraamat
+        <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
+          <ExpectumSymbol name="aim" size="header" />
+          <span>Expectumi vormiraamat</span>
         </p>
 
         <h1 className="mb-8 text-4xl font-light md:text-6xl">
@@ -65,7 +82,7 @@ export default function ExpectumLanguage() {
 
         <p className="mx-auto mb-14 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
           See leht kirjeldab põhimõtteid, mille järgi Expectum on kujunenud
-          ja mille järgi ta edasi kasvab.
+          ja mille järgi ta saab edasi avaneda.
         </p>
 
         <div className="space-y-10 text-left">
@@ -93,9 +110,7 @@ export default function ExpectumLanguage() {
             <div className="space-y-6">
               {words.map((item) => (
                 <div key={item.name} className="flex gap-5">
-                  <div className="w-10 text-3xl text-[#b78a4a]">
-                    {item.symbol}
-                  </div>
+                  <ExpectumSymbol name={item.id} size="card" />
 
                   <div>
                     <p className="mb-2 text-xl font-light">
@@ -121,11 +136,15 @@ export default function ExpectumLanguage() {
             </p>
 
             <p className="mb-4">
+              Ta eelistab märkamist tõlgendamisele.
+            </p>
+
+            <p className="mb-4">
               Ta ei ütle inimese eest, mida miski tähendab.
             </p>
 
             <p>
-              Ta aitab märkama, mitte otsustama.
+              Ta aitab märgata, mitte otsustada.
             </p>
           </section>
         </div>

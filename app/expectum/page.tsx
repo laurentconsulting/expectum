@@ -21,14 +21,14 @@ const conceptMap: ExpectumSection[] = [
   {
     symbol: "aim",
     title: "Expectum",
-    paragraphs: ["Kohtumise võimalus.", "Siin on see hoitud."],
+    paragraphs: ["Kohtumise ruum.", "Siin saab miski nähtavale tulla."],
   },
   {
     symbol: "meeting",
     title: "Kohtumine",
     paragraphs: [
       "Kohtumine on keskmes.",
-      "Kohtumine võib sünnitada kaja.",
+      "Kohtumine võib jätta kaja.",
     ],
   },
   {
@@ -36,23 +36,23 @@ const conceptMap: ExpectumSection[] = [
     title: "Kaja",
     paragraphs: [
       "Kaja on see, mis jääb kohtumisest kõlama.",
-      "Kaja võib avada teema.",
+      "Kaja võib aidata märgata teemat.",
     ],
   },
   {
     symbol: "theme",
     title: "Teema",
     paragraphs: [
-      "Teema toob nähtavale kordumised.",
-      "Teema võib tuua nähtavale suuna.",
+      "Teema on see, mis võib kordumistes nähtavale tulla.",
+      "Teema ei määratle inimest.",
     ],
   },
   {
     symbol: "direction",
     title: "Suund",
     paragraphs: [
-      "Suund võib avaneda kordumistes nähtavale tulnud teemadest.",
-      "Suund ei määra sihtkohta.",
+      "Suund on nähtavale tulnud võimalik liikumine.",
+      "Suund ei ole sihtkoht ega juhis.",
     ],
   },
   {
@@ -68,7 +68,7 @@ const conceptMap: ExpectumSection[] = [
     title: "Teekond",
     paragraphs: [
       "Teekond tuleb nähtavale varasemate sammude jälgedes.",
-      "Ja siis võib avaneda uus kohtumine.",
+      "Ta ei ole ette antud rada.",
     ],
   },
 ];
@@ -106,8 +106,8 @@ const sections: ExpectumSection[] = [
     title: "Kaja, Teema ja Suund",
     paragraphs: [
       "Kaja võib jääda kohtumisest kõlama.",
-      "Kaja võib avada teema.",
-      "Teema võib tuua nähtavale suuna.",
+      "Kaja võib aidata märgata teemat.",
+      "Teema võib kordumistes nähtavale tulla.",
       "Suund ei ole sihtkoht.",
       "Suund on võimalik liikumine, mis võib kordumistes nähtavale tulla.",
     ],
@@ -118,7 +118,7 @@ const sections: ExpectumSection[] = [
     paragraphs: [
       "Mälu võib hoida jälgi.",
       "Ta aitab hoida kohtumiste ja liikumise järjepidevust.",
-      "Ta võib aidata märkama liikumist.",
+      "Ta võib aidata märgata liikumist.",
       "Ta ei määra selle tähendust.",
       "Teekond tuleb nähtavale varasemate sammude jälgedes.",
       "Teekond ei ole ette antud rada.",
@@ -133,8 +133,8 @@ const sections: ExpectumSection[] = [
       "Aim ei määra tähendust.",
       "Aim ei määra suunda.",
       "Aim ei määra tulemust.",
-      "Vahel sünnib märkamine.",
-      "Vahel sünnib küsimus.",
+      "Vahel ilmneb märkamine.",
+      "Vahel avaneb küsimus.",
       "Vahel teenib kohtumist vaikus.",
     ],
   },
@@ -159,7 +159,7 @@ const sections: ExpectumSection[] = [
       "Kui kohtumine on toonud rohkem vaikust, võib see olla juba märkamine.",
       "Vaikus ei ole seisak.",
       "Liikumine ei ole kiirustamine.",
-      "Mõistmisest võib sündida vaikus.",
+      "Mõistmisest võib avaneda vaikus.",
       "Vaikusest võib nähtavale tulla liikumine.",
     ],
   },

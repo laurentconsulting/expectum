@@ -25,33 +25,32 @@ const symbols: SymbolItem[] = [
   {
     id: "echo",
     name: "Kaja",
-    description: "Kaja on see, mis jääb pärast kohtumist kõlama.",
+    description: "Kaja on see, mis jääb kohtumisest kõlama.",
   },
   {
     id: "theme",
     name: "Teema",
-    description: "Teema on see, mis hakkab korduma.",
+    description: "Teema on see, mis võib kordumistes nähtavale tulla.",
   },
   {
     id: "direction",
     name: "Suund",
-    description: "Suund viitab liikumisele, mitte sihtkohale.",
+    description: "Suund on nähtavale tulnud võimalik liikumine.",
   },
   {
     id: "path",
     name: "Teekond",
-    description: "Teekond on elav liikumine, mis muutub koos inimesega.",
+    description: "Teekond tuleb nähtavale varasemate sammude jälgedes.",
   },
   {
     id: "memory",
     name: "Mälu",
-    description: "Mälu aitab hoida järjepidevust.",
+    description: "Mälu aitab hoida kohtumiste ja teekonna järjepidevust.",
   },
   {
     id: "aim",
     name: "Aim",
-    description:
-      "Aim hoiab ruumi, kus inimene saab kohtuda iseenda küsimustega.",
+    description: "Aim hoiab ruumi kohtumisele.",
   },
 ];
 
@@ -66,14 +65,15 @@ export default function Symbols() {
         },
         {
           href: "/expectum",
-          label: "Expectum?",
+          label: "Expectum",
           symbol: "aim",
         },
       ]}
     >
       <section className="mx-auto max-w-4xl text-center">
-        <p className="mb-10 tracking-[0.4em] text-xs uppercase text-[#b78a4a]">
-          ✧ Expectumi sümbolid
+        <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
+          <ExpectumSymbol name="aim" size="header" />
+          <span>Expectumi sümbolid</span>
         </p>
 
         <h1 className="mb-6 text-4xl font-light md:text-6xl">
@@ -92,7 +92,7 @@ export default function Symbols() {
               className="rounded-3xl border border-[#d7b985] bg-white/45 p-8"
             >
               <div className="flex flex-col gap-6 md:flex-row md:items-center">
-                <ExpectumSymbol name={item.id} />
+                <ExpectumSymbol name={item.id} size="card" />
 
                 <div>
                   <h2 className="mb-3 text-2xl font-light">
