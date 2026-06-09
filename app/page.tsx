@@ -47,19 +47,7 @@ export default function Home() {
         </p>
 
         <div className="flex flex-col flex-wrap justify-center gap-4 md:flex-row">
-          <a
-            href="/enter"
-            className="rounded-full border border-[#c9a36a] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-          >
-            Ava kohtumine
-          </a>
-
-          <a
-            href="/enter?mode=create"
-            className="rounded-full border border-[#d8d1c7] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
-          >
-            Saa osaliseks
-          </a>
+         
         </div>
 
         <p className="mt-20 text-sm text-[#8a8278]">
