@@ -459,7 +459,7 @@ export default function Reflection() {
                 </p>
 
                 <p className="text-base leading-relaxed text-[#6d655d]">
-                  Kohtumise saad hiljem uuesti avada mälu alt. Oluline ei ole
+                  Kohtumise saad hiljem uuesti avada mälu, kohtumised alt. Oluline ei ole
                   küsimuste hulk, vaid see, mida küsimus avab.
                 </p>
               </div>

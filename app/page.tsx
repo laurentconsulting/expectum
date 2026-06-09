@@ -42,6 +42,8 @@ export default function Home() {
           Siin võib jääda kõlama Kaja.
           <br />
           Siin võib nähtavale tulla Suund.
+          <br />
+          Aim ei määra tähendust. Ta hoiab ruumi kohtumisele.
         </p>
 
         <div className="flex flex-col flex-wrap justify-center gap-4 md:flex-row">
