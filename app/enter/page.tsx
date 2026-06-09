@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import { supabase } from "@/lib/supabaseClient";
 
-export default function Enter() {
+function EnterContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -25,7 +25,7 @@ export default function Enter() {
 
   async function enter() {
     if (!email.trim() || !password.trim()) {
-      setMessage("Sisestamiseks on vaja e-posti ja salasõna.");
+      setMessage("Ava kohtumine vajab e-posti ja salasõna.");
       return;
     }
 
@@ -62,7 +62,7 @@ export default function Enter() {
 
     if (mode === "create") {
       setMessage(
-        "Konto on loodud. Kui e-posti kinnitamine on sisse lülitatud, kinnita kiri ja sisene seejärel uuesti."
+        "Oled saanud osaliseks. Kui e-posti kinnitamine on sisse lülitatud, kinnita kiri ja ava kohtumine seejärel uuesti."
       );
       return;
     }
@@ -83,16 +83,16 @@ export default function Enter() {
       <section className="mx-auto w-full max-w-3xl text-center">
         <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
           <ExpectumSymbol name="meeting" size="header" />
-          <span>Sisenemine</span>
+          <span>Osalemine</span>
         </p>
 
         <h1 className="mb-8 text-4xl font-light leading-tight md:text-6xl">
-          Sisene, et kohtumine saaks jätkuda.
+          Ava kohtumine.
         </h1>
 
         <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
-          Kasutajakonto seob kohtumised, kaja ja teekonna jäljed ühe inimesega.
-          Mälu hoiab järjepidevust ega määra tähendust.
+          Osaliseks saamine seob kohtumised, kaja ja teekonna jäljed ühe
+          inimesega. Mälu hoiab järjepidevust ega määra tähendust.
         </p>
 
         <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
@@ -106,7 +106,7 @@ export default function Enter() {
                   : "border-[#d8d1c7] text-[#6d655d]"
               }`}
             >
-              Sisene
+              Ava kohtumine
             </button>
 
             <button
@@ -118,7 +118,7 @@ export default function Enter() {
                   : "border-[#d8d1c7] text-[#6d655d]"
               }`}
             >
-              Loo konto
+              Saa osaliseks
             </button>
           </div>
 
@@ -151,8 +151,8 @@ export default function Enter() {
             {loading
               ? "Hetk..."
               : mode === "enter"
-              ? "Sisene"
-              : "Loo konto"}
+              ? "Ava kohtumine"
+              : "Saa osaliseks"}
           </button>
 
           {message && (
@@ -163,5 +163,13 @@ export default function Enter() {
         </div>
       </section>
     </ExpectumPage>
+  );
+}
+
+export default function Enter() {
+  return (
+    <Suspense fallback={null}>
+      <EnterContent />
+    </Suspense>
   );
 }
