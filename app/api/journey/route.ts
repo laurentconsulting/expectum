@@ -99,7 +99,7 @@ Lühike, inimlik ja rahulik tervikvaade.
 
 2. Nähtavale tulnud teemad
 Too esile 2–4 korduvat teemat.
-Ära muuda neid inimese määratluseks.
+Ära kasuta neid inimese kirjeldamiseks tervikuna.
 
 3. Muutuse märkamine
 Kirjelda muutust ainult siis,

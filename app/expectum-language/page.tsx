@@ -30,7 +30,7 @@ const words: WordItem[] = [
   {
     id: "theme",
     name: "Teema",
-    text: "Teema on see, mis võib kordumistes nähtavale tulla.",
+    text: "Teema võib kordumistes nähtavale tulla.",
   },
   {
     id: "direction",
@@ -50,7 +50,7 @@ const words: WordItem[] = [
   {
     id: "aim",
     name: "Aim",
-    text: "Aim hoiab ruumi kohtumisele.",
+    text: "Aim hoiab ruumi kohtumisele, vaikusele ja liikumisele.",
   },
 ];
 

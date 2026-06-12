@@ -30,7 +30,7 @@ const symbols: SymbolItem[] = [
   {
     id: "theme",
     name: "Teema",
-    description: "Teema on see, mis võib kordumistes nähtavale tulla.",
+    description: "Teema võib kordumistes nähtavale tulla.",
   },
   {
     id: "direction",
@@ -50,7 +50,7 @@ const symbols: SymbolItem[] = [
   {
     id: "aim",
     name: "Aim",
-    description: "Aim hoiab ruumi kohtumisele.",
+    description: "Aim hoiab ruumi kohtumisele, vaikusele ja liikumisele.",
   },
 ];
 

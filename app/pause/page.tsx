@@ -53,13 +53,6 @@ export default function Pause() {
           >
             Ava uus kohtumine
           </button>
-
-          <a
-  href="/return"
-  className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
->
-  Välju
-</a>
         </div>
 
         <p className="mt-20 text-sm text-[#8a8278]">

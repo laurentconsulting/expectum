@@ -44,7 +44,7 @@ const conceptMap: ExpectumSection[] = [
     title: "Teema",
     paragraphs: [
       "Teema on see, mis võib kordumistes nähtavale tulla.",
-      "Teema ei määratle inimest.",
+      "Teema ei ütle, kes inimene on.",
     ],
   },
   {

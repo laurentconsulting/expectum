@@ -36,13 +36,7 @@ export default function ReturnRoom() {
         </div>
 
         <div className="mt-12 flex flex-col justify-center gap-4 md:flex-row">
-          <a
-            href="/enter"
-            className="rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-          >
-            Ava kohtumine
-          </a>
-
+          
           <a
             href="/"
             className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
