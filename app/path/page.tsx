@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
-import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import ExpectumCard from "@/components/ExpectumCard";
+import ExpectumSection from "@/components/ExpectumSection";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import { supabase } from "@/lib/supabaseClient";
 
@@ -149,16 +150,8 @@ export default function Path() {
     <ExpectumAuthGate>
       <ExpectumPage
         footerLinks={[
-          {
-            href: "/journey",
-            label: "Liikumise märkamine",
-            symbol: "path",
-          },
-          {
-            href: "/settings",
-            label: "Mälu",
-            symbol: "memory",
-          },
+          { href: "/journey", label: "Liikumise märkamine", symbol: "path" },
+          { href: "/settings", label: "Mälu", symbol: "memory" },
           {
             href: "/attunement-question",
             label: "Vaikne küsimus",
@@ -166,96 +159,47 @@ export default function Path() {
           },
         ]}
       >
-        <section className="mx-auto max-w-5xl text-center">
-          <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
-            <ExpectumSymbol name="path" size="header" />
-            <span>Teekond</span>
-          </p>
-
-          <h1 className="mb-6 text-4xl font-light md:text-6xl">
-            Mis on jälgedes nähtavale tulnud?
-          </h1>
-
-          <p className="mx-auto mb-12 max-w-3xl text-lg leading-relaxed text-[#5f574f]">
-            Liikumine toimub kohtumises. Mälu hoiab jälgi. Teekond tuleb
-            nähtavale varasemate sammude jälgedes.
-          </p>
-
+        <ExpectumSection
+          symbol="path"
+          label="Teekond"
+          title="Mis on jälgedes nähtavale tulnud?"
+          intro="Liikumine toimub kohtumises. Mälu hoiab jälgi. Teekond tuleb nähtavale varasemate sammude jälgedes."
+          className="max-w-5xl"
+        >
           <div className="mb-12 grid gap-6 text-left md:grid-cols-2">
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-              <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Jälgede märkamine
-              </p>
-              <p className="leading-relaxed text-[#5f574f]">
-                Mis on kohtumistest alles jäänud ja soovinud nähtavale tulla.
-              </p>
-            </div>
+            <ExpectumCard label="Jälgede märkamine">
+              Mis on kohtumistest alles jäänud ja soovinud nähtavale tulla.
+            </ExpectumCard>
 
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-              <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Liikumise märkamine
-              </p>
-              <p className="leading-relaxed text-[#5f574f]">
-                Kuidas Kaja, Teema ja nähtavale tulnud Suund võivad ajas
-                omavahel kõnelema hakata.
-              </p>
-            </div>
+            <ExpectumCard label="Liikumise märkamine">
+              Kuidas Kaja, Teema ja nähtavale tulnud Suund võivad ajas
+              omavahel kõnelema hakata.
+            </ExpectumCard>
 
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-              <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Muutuse märkamine
-              </p>
-              <p className="leading-relaxed text-[#5f574f]">
-                Mis on nähtavale tulnud, vaibunud või teise valgusesse
-                liikunud.
-              </p>
-            </div>
+            <ExpectumCard label="Muutuse märkamine">
+              Mis on nähtavale tulnud, vaibunud või teise valgusesse liikunud.
+            </ExpectumCard>
 
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-              <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Märkamiste märkamine
-              </p>
-              <p className="leading-relaxed text-[#5f574f]">
-                Kuidas märkamine ise võib teekonna jooksul muutuda.
-              </p>
-            </div>
+            <ExpectumCard label="Märkamiste märkamine">
+              Kuidas märkamine ise võib teekonna jooksul muutuda.
+            </ExpectumCard>
           </div>
 
-          <div className="space-y-8 text-left">
-            {loading && (
-              <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-                Teekonna jälgede avamine...
-              </div>
-            )}
+          <div className="space-y-8">
+            {loading && <ExpectumCard>Teekonna jälgede avamine...</ExpectumCard>}
 
             {!loading && (
               <>
-                <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-                  <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Kohtumine
-                  </p>
+                <ExpectumCard label="Kohtumine">
+                  {latestMeeting?.question ||
+                    "Ühtegi kohtumist ei ole veel salvestatud."}
+                </ExpectumCard>
 
-                  <p className="whitespace-pre-line text-lg leading-relaxed">
-                    {latestMeeting?.question ||
-                      "Ühtegi kohtumist ei ole veel salvestatud."}
-                  </p>
-                </div>
+                <ExpectumCard label="Kaja">
+                  {latestEcho?.text || "Ühtegi kaja ei ole veel salvestatud."}
+                </ExpectumCard>
 
-                <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-                  <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Kaja
-                  </p>
-
-                  <p className="whitespace-pre-line text-lg leading-relaxed">
-                    {latestEcho?.text || "Ühtegi kaja ei ole veel salvestatud."}
-                  </p>
-                </div>
-
-                <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-                  <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Teema
-                  </p>
-
+                <ExpectumCard label="Teema">
                   <p className="text-2xl font-light">
                     {topTheme?.name || "Teema ei ole veel nähtavale tulnud."}
                   </p>
@@ -265,46 +209,24 @@ export default function Path() {
                       Teema on kohtumiste jälgedes kordunud.
                     </p>
                   )}
-                </div>
+                </ExpectumCard>
 
-                <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-                  <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Liikumise märkamine
-                  </p>
+                <ExpectumCard label="Liikumise märkamine">
+                  {latestNotice?.text ||
+                    "Liikumise märkamist ei ole veel salvestatud."}
+                </ExpectumCard>
 
-                  <p className="whitespace-pre-line leading-relaxed">
-                    {latestNotice?.text ||
-                      "Liikumise märkamist ei ole veel salvestatud."}
-                  </p>
-                </div>
+                <ExpectumCard label="Suund">
+                  {latestDirection?.text ||
+                    "Nähtavale tulnud suunda ei ole veel hoitud."}
+                </ExpectumCard>
 
-                <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-                  <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Suund
-                  </p>
+                <ExpectumCard label="Jagatud Kaja">
+                  {latestSharedInsight?.text ||
+                    "Ühtegi Kaja ei ole veel ühisesse ruumi liikunud."}
+                </ExpectumCard>
 
-                  <p className="whitespace-pre-line leading-relaxed">
-                    {latestDirection?.text ||
-                      "Nähtavale tulnud suunda ei ole veel hoitud."}
-                  </p>
-                </div>
-
-                <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-                  <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Jagatud Kaja
-                  </p>
-
-                  <p className="whitespace-pre-line leading-relaxed">
-                    {latestSharedInsight?.text ||
-                      "Ühtegi Kaja ei ole veel ühisesse ruumi liikunud."}
-                  </p>
-                </div>
-
-                <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
-                  <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Mälu hoiab
-                  </p>
-
+                <ExpectumCard label="Mälu hoiab">
                   <div className="space-y-4">
                     <p>{stats.meetings} kohtumist</p>
                     <p>{stats.echoes} kaja</p>
@@ -312,11 +234,11 @@ export default function Path() {
                     <p>{stats.directions} salvestatud suunda</p>
                     <p>{stats.sharedInsights} jagatud Kaja</p>
                   </div>
-                </div>
+                </ExpectumCard>
               </>
             )}
           </div>
-        </section>
+        </ExpectumSection>
       </ExpectumPage>
     </ExpectumAuthGate>
   );

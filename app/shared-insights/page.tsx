@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
-import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import ExpectumCard from "@/components/ExpectumCard";
+import ExpectumSection from "@/components/ExpectumSection";
 
 type SharedInsight = {
   id: string;
@@ -41,49 +42,26 @@ export default function SharedInsights() {
     <ExpectumAuthGate>
       <ExpectumPage
         footerLinks={[
-          {
-            href: "/settings",
-            label: "Mälu",
-            symbol: "memory",
-          },
-          {
-            href: "/expectum",
-            label: "Expectum",
-            symbol: "aim",
-          },
+          { href: "/settings", label: "Mälu", symbol: "memory" },
+          { href: "/expectum", label: "Expectum", symbol: "aim" },
         ]}
       >
-        <section className="mx-auto max-w-4xl text-center">
-          <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
-            <ExpectumSymbol name="echo" size="header" />
-            <span>Jagatud Kaja</span>
-          </p>
-
-          <h1 className="mb-6 text-4xl font-light md:text-6xl">
-            Kaja ühises ruumis
-          </h1>
-
-          <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
-            Siin on Kaja, mille osaline on lubanud ühisesse ruumi liikuda.
-            Kaja ei ava inimese lugu. Ta võib aidata märgata, mis kohtumistes
-            kõlama jääb.
-          </p>
-
+        <ExpectumSection
+          symbol="echo"
+          label="Jagatud Kaja"
+          title="Kaja ühises ruumis"
+          intro="Siin on Kaja, mille osaline on lubanud ühisesse ruumi liikuda. Kaja ei ava inimese lugu. Ta võib aidata märgata, mis kohtumistes kõlama jääb."
+        >
           {loading ? (
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
-              Jagatud Kaja avanemine...
-            </div>
+            <ExpectumCard>Jagatud Kaja avanemine...</ExpectumCard>
           ) : insights.length === 0 ? (
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+            <ExpectumCard>
               Ühtegi Kaja ei ole veel ühises ruumis nähtaval.
-            </div>
+            </ExpectumCard>
           ) : (
-            <div className="space-y-8 text-left">
+            <div className="space-y-8">
               {insights.map((item) => (
-                <div
-                  key={item.id}
-                  className="rounded-3xl border border-[#d7b985] bg-white/45 p-8"
-                >
+                <ExpectumCard key={item.id} label="Jagatud Kaja">
                   <p className="mb-3 text-sm text-[#8a8278]">
                     {new Date(item.created_at).toLocaleDateString("et-EE")}
                   </p>
@@ -96,22 +74,18 @@ export default function SharedInsights() {
                     Küsimus
                   </p>
 
-                  <p className="mb-8 text-lg leading-relaxed">
-                    {item.question}
-                  </p>
+                  <p className="mb-8">{item.question}</p>
 
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
                     Kaja
                   </p>
 
-                  <p className="whitespace-pre-line text-xl leading-relaxed text-[#4f4942]">
-                    {item.text}
-                  </p>
-                </div>
+                  <p className="text-xl leading-relaxed">{item.text}</p>
+                </ExpectumCard>
               ))}
             </div>
           )}
-        </section>
+        </ExpectumSection>
       </ExpectumPage>
     </ExpectumAuthGate>
   );

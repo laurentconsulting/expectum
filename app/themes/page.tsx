@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
-import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import ExpectumCard from "@/components/ExpectumCard";
+import ExpectumSection from "@/components/ExpectumSection";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import { EXPECTUM_THEMES } from "@/lib/expectumThemes";
 import { supabase } from "@/lib/supabaseClient";
@@ -124,59 +125,30 @@ export default function Themes() {
     <ExpectumAuthGate>
       <ExpectumPage
         footerLinks={[
-          {
-            href: "/trajectory",
-            label: "Suund",
-            symbol: "direction",
-          },
-          {
-            href: "/path",
-            label: "Teekond",
-            symbol: "path",
-          },
-          {
-            href: "/settings",
-            label: "Mälu",
-            symbol: "memory",
-          },
+          { href: "/trajectory", label: "Suund", symbol: "direction" },
+          { href: "/path", label: "Teekond", symbol: "path" },
+          { href: "/settings", label: "Mälu", symbol: "memory" },
         ]}
       >
-        <section className="mx-auto max-w-4xl text-center">
-          <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
-            <ExpectumSymbol name="theme" size="header" />
-            <span>Teema</span>
-          </p>
-
-          <h1 className="mb-6 text-4xl font-light md:text-6xl">
-            Mis kordumistes nähtavale tuleb?
-          </h1>
-
-          <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
-            Teema ei ütle, kes inimene on. Ta aitab märgata, mis
-            kohtumistes uuesti kõlama hakkab ja võib avada nähtavale
-            tulnud suuna.
-          </p>
-
+        <ExpectumSection
+          symbol="theme"
+          label="Teema"
+          title="Mis kordumistes nähtavale tuleb?"
+          intro="Teema ei ütle, kes inimene on. Ta aitab märgata, mis kohtumistes uuesti kõlama hakkab ja võib avada nähtavale tulnud suuna."
+        >
           {loading ? (
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
-              Teema avanemine...
-            </div>
+            <ExpectumCard>Teema avanemine...</ExpectumCard>
           ) : themes.length === 0 ? (
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+            <ExpectumCard>
               Teemat ei ole veel piisavalt nähtavale tulnud.
-            </div>
+            </ExpectumCard>
           ) : (
-            <div className="space-y-8 text-left">
+            <div className="space-y-8">
               {themes.map((theme) => (
-                <div
-                  key={theme.name}
-                  className="rounded-3xl border border-[#d7b985] bg-white/45 p-8"
-                >
+                <ExpectumCard key={theme.name} label="Teema">
                   <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                     <div>
-                      <p className="mb-3 text-2xl font-light">
-                        {theme.name}
-                      </p>
+                      <p className="mb-3 text-2xl font-light">{theme.name}</p>
 
                       <p className="text-sm leading-relaxed text-[#8a8278]">
                         See teema on kohtumiste jälgedes nähtavale tulnud.
@@ -198,11 +170,11 @@ export default function Themes() {
                       </span>
                     ))}
                   </div>
-                </div>
+                </ExpectumCard>
               ))}
             </div>
           )}
-        </section>
+        </ExpectumSection>
       </ExpectumPage>
     </ExpectumAuthGate>
   );
