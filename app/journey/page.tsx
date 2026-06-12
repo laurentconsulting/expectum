@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabaseClient";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import ExpectumCard from "@/components/ExpectumCard";
 
 type StoredMessage = {
   role?: "user" | "assistant";
@@ -84,7 +85,9 @@ export default function Journey() {
 
     const { data: noticesData, error: noticesError } = await supabase
       .from("journey_notices")
-      .select("id, text, history_count, echoes_count, sessions_count, created_at")
+      .select(
+        "id, text, history_count, echoes_count, sessions_count, created_at"
+      )
       .eq("user_id", userId)
       .order("created_at", { ascending: false });
 
@@ -238,9 +241,9 @@ export default function Journey() {
             symbol: "meeting",
           },
           {
-            href: "/expectum",
-            label: "Expectum?",
-            symbol: "aim",
+            href: "/settings",
+            label: "Mälu",
+            symbol: "memory",
           },
         ]}
       >
@@ -255,18 +258,18 @@ export default function Journey() {
           </h1>
 
           <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
-            Liikumise märkamine vaatab kohtumisi, kaja ja varasemaid jälgi.
+            Liikumise märkamine vaatab kohtumisi, Kaja ja varasemaid jälgi.
             Ta ei määra teekonda. Ta aitab märgata, mis on nähtaval.
           </p>
 
           <p className="mb-12 text-sm text-[#8a8278]">
-            Kohtumised: {historyCount} · Kaja: {kajaCount} · Liikumise
-            märkamised: {previousNoticesCount}
+            Kohtumised · {historyCount} · Kaja · {kajaCount} · Liikumise
+            märkamised · {previousNoticesCount}
           </p>
 
-          <div className="rounded-3xl border border-[#d7b985] bg-white/50 p-8 text-left text-lg leading-relaxed whitespace-pre-line text-[#4f4942]">
+          <ExpectumCard label="Liikumise märkamine" className="bg-white/50">
             {loading ? "Liikumise märkamine..." : journey}
-          </div>
+          </ExpectumCard>
 
           <div className="mt-12 flex justify-center">
             <button
