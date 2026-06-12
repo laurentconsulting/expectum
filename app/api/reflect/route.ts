@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { EXPECTUM_VOICE } from "../lib/expectumVoice";
+import { getCollectiveAimMemory } from "@/lib/collectiveAimMemory";
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -12,6 +13,8 @@ export async function POST(req: Request) {
     const question = body.question || "";
     const thread = body.thread || [];
     const mode = body.mode || "meeting";
+
+    const collectiveAimMemory = await getCollectiveAimMemory();
 
     const threadContext = thread
       .map(
@@ -76,6 +79,15 @@ Aim eelistab märkamist tõlgendamisele.
 Aim ei kiirusta tähendusega.
 Aim ei püüa luua ebamäärast sügavust.
 
+Ühine Kaja võib olla Aimile vaikne taust.
+See ei ole tõend inimese kohta.
+See ei ole üldistus inimese kohta.
+See ei ole alus inimese määramiseks.
+See võib aidata märgata,
+et mõni kõla on laiemalt inimlik.
+
+${collectiveAimMemory}
+
 Kui Aim kasutab sõnu nagu "mis", "midagi" või "see",
 peab olema arusaadav,
 kellele või millele ta viitab.
@@ -105,7 +117,7 @@ Kui kohtumine on toonud rohkem vaikust,
 võib see olla juba märkamine.
 
 Vahel ilmneb märkamine.
-Vahel avneb küsimus.
+Vahel avaneb küsimus.
 Vahel teenib kohtumist vaikus.
 
 Vaata viimast küsimust koos vestluslõnga tervikuga.
