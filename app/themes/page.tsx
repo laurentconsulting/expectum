@@ -135,9 +135,9 @@ export default function Themes() {
             symbol: "path",
           },
           {
-            href: "/expectum",
-            label: "Expectum?",
-            symbol: "aim",
+            href: "/settings",
+            label: "Mälu",
+            symbol: "memory",
           },
         ]}
       >
@@ -148,17 +148,18 @@ export default function Themes() {
           </p>
 
           <h1 className="mb-6 text-4xl font-light md:text-6xl">
-            Kordumised tulevad nähtavale
+            Mis kordumistes nähtavale tuleb?
           </h1>
 
           <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
-  Teema ei ütle, kes inimene on. Ta aitab märgata, mis kohtumistes
-  kordub ja võib avada nähtavale tulnud suuna.
-</p>
+            Teema ei ütle, kes inimene on. Ta aitab märgata, mis
+            kohtumistes uuesti kõlama hakkab ja võib avada nähtavale
+            tulnud suuna.
+          </p>
 
           {loading ? (
             <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
-              Teemade avanemine...
+              Teema avanemine...
             </div>
           ) : themes.length === 0 ? (
             <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
@@ -171,20 +172,20 @@ export default function Themes() {
                   key={theme.name}
                   className="rounded-3xl border border-[#d7b985] bg-white/45 p-8"
                 >
-                  <div className="flex items-start justify-between gap-6">
+                  <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                     <div>
                       <p className="mb-3 text-2xl font-light">
                         {theme.name}
                       </p>
 
-                      <p className="text-sm text-[#8a8278]">
-                        {theme.count} kohtumises nähtavale tulnud
+                      <p className="text-sm leading-relaxed text-[#8a8278]">
+                        See teema on kohtumiste jälgedes nähtavale tulnud.
                       </p>
                     </div>
 
-                    <div className="text-3xl font-light text-[#b78a4a]">
-                      {theme.count}
-                    </div>
+                    <p className="text-sm uppercase tracking-[0.25em] text-[#b78a4a]">
+                      {theme.count} märkamist
+                    </p>
                   </div>
 
                   <div className="mt-6 flex flex-wrap gap-3">
