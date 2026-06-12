@@ -13,6 +13,7 @@ export async function GET() {
     return Response.json(
       {
         insights: [],
+        error: "Jagatud Kaja ei saanud avada.",
       },
       { status: 500 }
     );
@@ -29,8 +30,7 @@ export async function POST(req: Request) {
 
     const question = body.question || "";
     const text = body.text || "";
-    const questionCount = body.questionCount || 1;
-    const userId = body.userId || null;
+    const questionCount = Number(body.questionCount || 1);
 
     if (!question.trim() || !text.trim()) {
       return Response.json(
@@ -42,7 +42,6 @@ export async function POST(req: Request) {
     }
 
     const { error } = await supabaseAdmin.from("shared_insights").insert({
-      user_id: userId,
       question,
       text,
       question_count: questionCount,
