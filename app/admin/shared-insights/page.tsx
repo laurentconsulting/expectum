@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
-import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 import ExpectumCard from "@/components/ExpectumCard";
 import ExpectumSection from "@/components/ExpectumSection";
 
@@ -145,7 +144,6 @@ export default function SharedInsightsAdmin() {
   }
 
   return (
-    <ExpectumAuthGate>
       <ExpectumPage
         footerLinks={[
           {
@@ -254,6 +252,5 @@ export default function SharedInsightsAdmin() {
           </div>
         </ExpectumSection>
       </ExpectumPage>
-    </ExpectumAuthGate>
   );
 }
