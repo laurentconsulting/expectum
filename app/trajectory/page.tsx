@@ -71,7 +71,9 @@ export default function Trajectory() {
 
     const { data: noticesData, error: noticesError } = await supabase
       .from("journey_notices")
-      .select("id, text, history_count, echoes_count, sessions_count, created_at")
+      .select(
+        "id, text, history_count, echoes_count, sessions_count, created_at"
+      )
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(3);
@@ -208,30 +210,36 @@ export default function Trajectory() {
             symbol: "path",
           },
           {
-            href: "/expectum",
-            label: "Expectum?",
-            symbol: "aim",
+            href: "/settings",
+            label: "Mälu",
+            symbol: "memory",
           },
         ]}
       >
         <section className="mx-auto max-w-4xl text-center">
           <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
             <ExpectumSymbol name="direction" size="header" />
-            <span>Liikumise suund</span>
+            <span>Suund</span>
           </p>
 
           <h1 className="mb-6 text-4xl font-light md:text-6xl">
-            Mis suund on nähtavale tulnud?
+            Mis on liikumises nähtavale tulnud?
           </h1>
 
           <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
-            Suund ei ole ennustus ega sihtkoht. Ta on võimalik liikumine,
-            mis võib kordumistes nähtavale tulla.
+            Suund ei ole ennustus, sihtkoht ega juhis. Ta on võimalik
+            liikumine, mis võib kordumistes nähtavale tulla.
           </p>
 
           <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+            <p className="mb-5 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
+              Nähtavale tulnud suund
+            </p>
+
             {loading ? (
-              <p>Nähtavale tulnud suuna märkamine...</p>
+              <p className="text-lg leading-relaxed text-[#4f4942]">
+                Suuna märkamine...
+              </p>
             ) : (
               <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
                 {trajectory}
@@ -241,7 +249,7 @@ export default function Trajectory() {
 
           {saved && (
             <p className="mt-6 text-[#8b642f]">
-              Nähtavale tulnud suund on hoitud.
+              Suund on salvestatud.
             </p>
           )}
 
@@ -257,9 +265,9 @@ export default function Trajectory() {
             <button
               type="button"
               onClick={saveTrajectory}
-              className="rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
+              className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
             >
-              Hoia suund
+              Salvesta suund
             </button>
           </div>
         </section>
