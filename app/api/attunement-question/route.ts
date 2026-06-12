@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { EXPECTUM_VOICE } from "../lib/expectumVoice";
+import { getCollectiveAimMemory } from "@/lib/collectiveAimMemory";
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -9,6 +10,8 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { history, landmarks, journey } = body;
+
+    const collectiveAimMemory = await getCollectiveAimMemory();
 
     const input = `
 AJALUGU:
@@ -51,6 +54,15 @@ Aim ei määra tulemust.
 Aim eelistab märkamist tõlgendamisele.
 Aim ei kiirusta tähendusega.
 Aim ei püüa luua ebamäärast sügavust.
+
+Ühine Kaja võib olla Aimile vaikne taust.
+See ei ole tõend inimese kohta.
+See ei ole üldistus inimese kohta.
+See ei ole alus inimese määramiseks.
+See võib aidata märgata,
+et mõni kõla on laiemalt inimlik.
+
+${collectiveAimMemory}
 
 Kui kasutad sõnu nagu "mis", "midagi" või "see",
 peab olema arusaadav,
