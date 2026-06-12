@@ -7,10 +7,7 @@ import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import { supabase } from "@/lib/supabaseClient";
 
-import type {
-  SharedInsight,
-  ThemeItem,
-} from "@/lib/expectumTypes";
+import type { SharedInsight, ThemeItem } from "@/lib/expectumTypes";
 
 type MeetingItem = {
   id: string;
@@ -93,7 +90,9 @@ export default function Path() {
 
     const { data: noticesData, error: noticesError } = await supabase
       .from("journey_notices")
-      .select("id, text, history_count, echoes_count, sessions_count, created_at")
+      .select(
+        "id, text, history_count, echoes_count, sessions_count, created_at"
+      )
       .eq("user_id", userId)
       .order("created_at", { ascending: false });
 
@@ -156,9 +155,9 @@ export default function Path() {
             symbol: "path",
           },
           {
-            href: "/expectum",
-            label: "Expectum?",
-            symbol: "aim",
+            href: "/settings",
+            label: "Mälu",
+            symbol: "memory",
           },
           {
             href: "/attunement-question",
@@ -170,11 +169,11 @@ export default function Path() {
         <section className="mx-auto max-w-5xl text-center">
           <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
             <ExpectumSymbol name="path" size="header" />
-            <span>Minu teekond</span>
+            <span>Teekond</span>
           </p>
 
           <h1 className="mb-6 text-4xl font-light md:text-6xl">
-            Teekonnal nähtavale tulnud
+            Mis on jälgedes nähtavale tulnud?
           </h1>
 
           <p className="mx-auto mb-12 max-w-3xl text-lg leading-relaxed text-[#5f574f]">
@@ -197,8 +196,8 @@ export default function Path() {
                 Liikumise märkamine
               </p>
               <p className="leading-relaxed text-[#5f574f]">
-                Kuidas kaja, teema ja nähtavale tulnud suund hakkavad ajas
-                omavahel kõnelema.
+                Kuidas Kaja, Teema ja nähtavale tulnud Suund võivad ajas
+                omavahel kõnelema hakata.
               </p>
             </div>
 
@@ -207,7 +206,8 @@ export default function Path() {
                 Muutuse märkamine
               </p>
               <p className="leading-relaxed text-[#5f574f]">
-                Mis on esile kerkinud, vaibunud või teise valgusesse liikunud.
+                Mis on nähtavale tulnud, vaibunud või teise valgusesse
+                liikunud.
               </p>
             </div>
 
@@ -232,7 +232,7 @@ export default function Path() {
               <>
                 <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Viimane kohtumine
+                    Kohtumine
                   </p>
 
                   <p className="whitespace-pre-line text-lg leading-relaxed">
@@ -243,7 +243,7 @@ export default function Path() {
 
                 <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Viimane kaja
+                    Kaja
                   </p>
 
                   <p className="whitespace-pre-line text-lg leading-relaxed">
@@ -253,7 +253,7 @@ export default function Path() {
 
                 <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Nähtavale tulnud teema
+                    Teema
                   </p>
 
                   <p className="text-2xl font-light">
@@ -262,14 +262,14 @@ export default function Path() {
 
                   {topTheme && (
                     <p className="mt-3 text-sm text-[#8a8278]">
-                      {topTheme.count} kohtumises nähtavale tulnud
+                      Teema on kohtumiste jälgedes kordunud.
                     </p>
                   )}
                 </div>
 
                 <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Viimane liikumise märkamine
+                    Liikumise märkamine
                   </p>
 
                   <p className="whitespace-pre-line leading-relaxed">
@@ -280,7 +280,7 @@ export default function Path() {
 
                 <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Viimane nähtavale tulnud suund
+                    Suund
                   </p>
 
                   <p className="whitespace-pre-line leading-relaxed">
@@ -291,26 +291,26 @@ export default function Path() {
 
                 <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Viimane jagatud Kaja
+                    Jagatud Kaja
                   </p>
 
                   <p className="whitespace-pre-line leading-relaxed">
                     {latestSharedInsight?.text ||
-                      "Ühtegi kaja ei ole veel jagamiseks esitatud."}
+                      "Ühtegi Kaja ei ole veel ühisesse ruumi liikunud."}
                   </p>
                 </div>
 
                 <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Nähtavad jäljed
+                    Mälu hoiab
                   </p>
 
                   <div className="space-y-4">
-                    <p>Kohtumised: {stats.meetings}</p>
-                    <p>Salvestatud kaja: {stats.echoes}</p>
-                    <p>Liikumise märkamised: {stats.notices}</p>
-                    <p>Hoitud suunad: {stats.directions}</p>
-                    <p>Jagatud kaja: {stats.sharedInsights}</p>
+                    <p>{stats.meetings} kohtumist</p>
+                    <p>{stats.echoes} kaja</p>
+                    <p>{stats.notices} liikumise märkamist</p>
+                    <p>{stats.directions} salvestatud suunda</p>
+                    <p>{stats.sharedInsights} jagatud Kaja</p>
                   </div>
                 </div>
               </>
