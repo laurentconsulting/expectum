@@ -176,10 +176,10 @@ export default function Settings() {
               className="rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left transition hover:bg-white/65"
             >
               <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Jagatud kohtumised
+                Jagatud Kaja
               </p>
               <p className="text-[#5f574f]">
-                Teiste poolt jagatud ja kinnitatud kaja.
+                Kaja, mille osaline on lubanud ühisesse ruumi liikuda.
               </p>
             </a>
 

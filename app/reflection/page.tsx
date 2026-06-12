@@ -301,7 +301,7 @@ export default function Reflection() {
     if (isShared) return;
 
     const confirmed = window.confirm(
-      "Kas soovid selle kaja anonüümselt jagamiseks esitada?"
+      "Kas lubad sellel Kajal ühisesse ruumi liikuda?"
     );
 
     if (!confirmed) return;
@@ -332,7 +332,7 @@ export default function Reflection() {
     });
 
     if (!response.ok) {
-      console.error("Anonüümset kaja ei saanud Supabase'i salvestada.");
+      console.error("Kaja ei saanud ühisesse ruumi jagad.");
       return;
     }
 
@@ -394,7 +394,7 @@ export default function Reflection() {
                       >
                         {isSaved
                           ? "✓ Kaja salvestatud — eemalda"
-                          : "☆ Salvesta kaja"}
+                          : "☆ Salvesta Kaja"}
                       </button>
 
                       {isSaved && (
@@ -406,12 +406,12 @@ export default function Reflection() {
                           >
                             {isShared
                               ? "✓ Esitatud kinnitamiseks"
-                              : "Jaga anonüümselt"}
+                              : "Luba kajal liikuda"}
                           </button>
 
                           {isShared && (
                             <p className="mt-3 text-sm text-[#8a8278]">
-                              Kaja liigub avalikuks alles pärast kinnitamist.
+                              Kaja jõuab ühisesse ruumi alles pärast kinnitamist.
                             </p>
                           )}
                         </>
