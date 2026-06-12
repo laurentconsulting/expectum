@@ -1,4 +1,27 @@
-import { supabase } from "@/lib/supabaseClient";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
+
+export async function GET() {
+  const { data, error } = await supabaseAdmin
+    .from("shared_insights")
+    .select("id, question, text, question_count, created_at")
+    .eq("approved", true)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Jagatud Kaja ei saanud avada.", error);
+
+    return Response.json(
+      {
+        insights: [],
+      },
+      { status: 500 }
+    );
+  }
+
+  return Response.json({
+    insights: data || [],
+  });
+}
 
 export async function POST(req: Request) {
   try {
@@ -7,35 +30,34 @@ export async function POST(req: Request) {
     const question = body.question || "";
     const text = body.text || "";
     const questionCount = body.questionCount || 1;
+    const userId = body.userId || null;
 
     if (!question.trim() || !text.trim()) {
       return Response.json(
         {
-          error: "Puudub küsimus või äratundmine.",
+          error: "Kaja või küsimus puudub.",
         },
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
     }
 
-    const { error } = await supabase
-      .from("shared_insights")
-      .insert({
-        question,
-        text,
-        question_count: questionCount,
-        approved: false,
-      });
+    const { error } = await supabaseAdmin.from("shared_insights").insert({
+      user_id: userId,
+      question,
+      text,
+      question_count: questionCount,
+      approved: false,
+      created_at: new Date().toISOString(),
+    });
 
     if (error) {
+      console.error("Kaja ei saanud ühisesse ruumi liikuda.", error);
+
       return Response.json(
         {
-          error: error.message,
+          error: "Kaja ei saanud ühisesse ruumi liikuda.",
         },
-        {
-          status: 500,
-        }
+        { status: 500 }
       );
     }
 
@@ -47,52 +69,9 @@ export async function POST(req: Request) {
 
     return Response.json(
       {
-        error: "Jagatud Kaja ei saanud salvestada.",
+        error: "Kaja ei saanud ühisesse ruumi liikuda.",
       },
-      {
-        status: 500,
-      }
-    );
-  }
-}
-
-export async function GET() {
-  try {
-    const { data, error } = await supabase
-      .from("shared_insights")
-      .select(
-        "id, question, text, created_at, question_count"
-      )
-      .eq("approved", true)
-      .order("created_at", {
-        ascending: false,
-      });
-
-    if (error) {
-      return Response.json(
-        {
-          insights: [],
-          error: error.message,
-        },
-        {
-          status: 500,
-        }
-      );
-    }
-
-    return Response.json({
-      insights: data || [],
-    });
-  } catch (error) {
-    console.error(error);
-
-    return Response.json(
-      {
-        insights: [],
-      },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 }

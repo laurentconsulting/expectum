@@ -406,7 +406,7 @@ export default function Reflection() {
                           >
                             {isShared
                               ? "✓ Esitatud kinnitamiseks"
-                              : "Luba kajal liikuda"}
+                              : "Luba Kajal liikuda"}
                           </button>
 
                           {isShared && (
