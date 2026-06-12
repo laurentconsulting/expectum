@@ -291,7 +291,7 @@ export default function Path() {
 
                 <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8">
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Viimane jagatud kaja
+                    Viimane jagatud Kaja
                   </p>
 
                   <p className="whitespace-pre-line leading-relaxed">

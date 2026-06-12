@@ -85,7 +85,7 @@ const visibleInsights = insights.filter((item) => {
         </p>
 
         <h1 className="text-4xl md:text-6xl font-light mb-10">
-          Jagatud äratundmised
+          Jagatud Kaja
         </h1>
 
         <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-6 mb-10">

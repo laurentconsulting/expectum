@@ -68,6 +68,50 @@ export default function Settings() {
     setClearing(false);
   }
 
+  const memoryLinks = [
+    {
+      href: "/history",
+      title: "Kohtumised",
+      text: "Kohtumised ja nende jäljed.",
+    },
+    {
+      href: "/landmarks",
+      title: "Kaja",
+      text: "See, mis kohtumisest kõlama jäi.",
+    },
+    {
+      href: "/timeline",
+      title: "Liikumise ajajoon",
+      text: "Kohtumiste ja jälgede rahulik järjestus ajas.",
+    },
+    {
+      href: "/journey-reflections",
+      title: "Liikumise märkamised",
+      text: "Salvestatud märkamised sellest, mis liikumises nähtavale tuli.",
+    },
+    {
+      href: "/themes",
+      title: "Teema",
+      text: "See, mis võib kordumistes nähtavale tulla.",
+    },
+    {
+      href: "/trajectory-history",
+      title: "Salvestatud suunad",
+      text: "Suunad, mida oled soovinud alles hoida.",
+    },
+    {
+      href: "/shared-insights",
+      title: "Jagatud Kaja",
+      text: "Kaja, mille osaline on lubanud ühisesse ruumi liikuda.",
+    },
+    {
+      href: "/statistics",
+      title: "Koond",
+      text: "Vaikne ülevaade sellest, mida Mälu hoiab.",
+      wide: true,
+    },
+  ];
+
   return (
     <ExpectumAuthGate>
       <ExpectumPage
@@ -79,7 +123,7 @@ export default function Settings() {
           },
           {
             href: "/expectum",
-            label: "Expectum?",
+            label: "Expectum",
             symbol: "aim",
           },
         ]}
@@ -113,87 +157,21 @@ export default function Settings() {
           </div>
 
           <div className="mt-12 grid gap-4 md:grid-cols-2">
-            <a
-              href="/history"
-              className="rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left transition hover:bg-white/65"
-            >
-              <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Kohtumised
-              </p>
-              <p className="text-[#5f574f]">Kohtumised ja nende jäljed.</p>
-            </a>
+            {memoryLinks.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className={`rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left transition hover:bg-white/65 ${
+                  item.wide ? "md:col-span-2" : ""
+                }`}
+              >
+                <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
+                  {item.title}
+                </p>
 
-            <a
-              href="/landmarks"
-              className="rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left transition hover:bg-white/65"
-            >
-              <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Kaja
-              </p>
-              <p className="text-[#5f574f]">
-                See, mis kohtumisest kõlama jäi.
-              </p>
-            </a>
-
-            <a
-              href="/timeline"
-              className="rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left transition hover:bg-white/65"
-            >
-              <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Liikumise ajajoon
-              </p>
-              <p className="text-[#5f574f]">
-                Kohtumiste ja jälgede rahulik järjestus ajas.
-              </p>
-            </a>
-
-            <a
-              href="/journey-reflections"
-              className="rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left transition hover:bg-white/65"
-            >
-              <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Liikumise märkamised
-              </p>
-              <p className="text-[#5f574f]">
-                Salvestatud märkamised sellest, mis liikumises nähtavale tuli.
-              </p>
-            </a>
-
-            <a
-              href="/trajectory-history"
-              className="rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left transition hover:bg-white/65"
-            >
-              <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Hoitud suunad
-              </p>
-              <p className="text-[#5f574f]">
-                Suunad, mida oled soovinud teekonnal alles hoida.
-              </p>
-            </a>
-
-            <a
-              href="/shared-insights"
-              className="rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left transition hover:bg-white/65"
-            >
-              <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Jagatud Kaja
-              </p>
-              <p className="text-[#5f574f]">
-                Kaja, mille osaline on lubanud ühisesse ruumi liikuda.
-              </p>
-            </a>
-
-            <a
-              href="/statistics"
-              className="rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left transition hover:bg-white/65 md:col-span-2"
-            >
-              <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                Koond
-              </p>
-              <p className="text-[#5f574f]">
-                Vaikne ülevaade sellest, mida mälu hoiab.
-              </p>
-            </a>
+                <p className="text-[#5f574f]">{item.text}</p>
+              </a>
+            ))}
           </div>
 
           <div className="mt-12 flex justify-center">

@@ -47,7 +47,7 @@ export async function POST(req: Request) {
 
     return Response.json(
       {
-        error: "Jagatud äratundmist ei saanud salvestada.",
+        error: "Jagatud Kaja ei saanud salvestada.",
       },
       {
         status: 500,
