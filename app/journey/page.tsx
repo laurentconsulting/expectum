@@ -7,6 +7,7 @@ import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 import ExpectumCard from "@/components/ExpectumCard";
+import ExpectumButton from "@/components/ExpectumButton";
 
 type StoredMessage = {
   role?: "user" | "assistant";
@@ -230,21 +231,13 @@ export default function Journey() {
     <ExpectumAuthGate>
       <ExpectumPage
         footerLinks={[
-          {
-            href: "/path",
-            label: "Teekond",
-            symbol: "path",
-          },
+          { href: "/path", label: "Teekond", symbol: "path" },
           {
             href: "/attunement-question",
             label: "Vaikne küsimus",
             symbol: "meeting",
           },
-          {
-            href: "/settings",
-            label: "Mälu",
-            symbol: "memory",
-          },
+          { href: "/settings", label: "Mälu", symbol: "memory" },
         ]}
       >
         <section className="mx-auto max-w-4xl text-center">
@@ -272,13 +265,9 @@ export default function Journey() {
           </ExpectumCard>
 
           <div className="mt-12 flex justify-center">
-            <button
-              type="button"
-              onClick={openJourney}
-              className="rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-            >
+            <ExpectumButton onClick={openJourney}>
               Märka uuesti
-            </button>
+            </ExpectumButton>
           </div>
         </section>
       </ExpectumPage>

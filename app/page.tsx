@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumButton from "@/components/ExpectumButton";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function Home() {
@@ -64,42 +65,27 @@ export default function Home() {
         <div className="flex flex-col flex-wrap justify-center gap-4 md:flex-row">
           {signedIn ? (
             <>
-              <a
-                href="/attunement"
-                className="rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-              >
+              <ExpectumButton href="/attunement">
                 Ava kohtumine
-              </a>
+              </ExpectumButton>
 
-              <a
-                href="/question?mode=exploration"
-                className="rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-              >
+              <ExpectumButton href="/question?mode=exploration">
                 Ava avardamine
-              </a>
+              </ExpectumButton>
 
-              <a
-                href="/path"
-                className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
-              >
+              <ExpectumButton href="/path" variant="soft">
                 Vaata teekonda
-              </a>
+              </ExpectumButton>
             </>
           ) : (
             <>
-              <a
-                href="/enter"
-                className="rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-              >
+              <ExpectumButton href="/enter">
                 Ava kohtumine
-              </a>
+              </ExpectumButton>
 
-              <a
-                href="/enter"
-                className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
-              >
+              <ExpectumButton href="/enter" variant="soft">
                 Sisene
-              </a>
+              </ExpectumButton>
             </>
           )}
         </div>

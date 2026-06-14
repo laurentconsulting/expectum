@@ -42,6 +42,8 @@ export default function SharedInsights() {
     <ExpectumAuthGate>
       <ExpectumPage
         footerLinks={[
+          {  href: "/collective-echo", label: "Ühine Kaja", symbol: "echo",
+},
           { href: "/settings", label: "Mälu", symbol: "memory" },
           { href: "/expectum", label: "Expectum", symbol: "aim" },
         ]}

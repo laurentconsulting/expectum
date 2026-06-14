@@ -6,25 +6,26 @@ import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import ExpectumButton from "@/components/ExpectumButton";
 
 type QuestionMode = "meeting" | "thought" | "exploration";
 
 function QuestionContent() {
   const router = useRouter();
-const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
 
-const initialMode = searchParams.get("mode");
+  const initialMode = searchParams.get("mode");
 
-const getInitialMode = (): QuestionMode => {
-  if (initialMode === "thought") return "thought";
-  if (initialMode === "exploration") return "exploration";
-  return "meeting";
-};
+  const getInitialMode = (): QuestionMode => {
+    if (initialMode === "thought") return "thought";
+    if (initialMode === "exploration") return "exploration";
+    return "meeting";
+  };
 
-const [question, setQuestion] = useState("");
-const [mode, setMode] = useState<QuestionMode>(getInitialMode);
+  const [question, setQuestion] = useState("");
+  const [mode, setMode] = useState<QuestionMode>(getInitialMode);
 
-const continueMeeting = searchParams.get("continue") === "1";
+  const continueMeeting = searchParams.get("continue") === "1";
 
   function sendQuestion() {
     if (!question.trim()) return;
@@ -88,41 +89,24 @@ const continueMeeting = searchParams.get("continue") === "1";
           </p>
 
           <div className="mb-4 flex flex-col justify-center gap-4 md:flex-row">
-            <button
-              type="button"
-              onClick={() => setMode("meeting")}
-              className={`rounded-full border px-6 py-3 text-xs uppercase tracking-[0.25em] transition ${
-                mode === "meeting"
-                  ? "border-[#c9a36a] bg-[#efe2ce] text-[#8b642f]"
-                  : "border-[#d8d1c7] text-[#6d655d]"
-              }`}
-            >
-              Kohtumine
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMode("thought")}
-              className={`rounded-full border px-6 py-3 text-xs uppercase tracking-[0.25em] transition ${
-                mode === "thought"
-                  ? "border-[#c9a36a] bg-[#efe2ce] text-[#8b642f]"
-                  : "border-[#d8d1c7] text-[#6d655d]"
-              }`}
-            >
-              Mõttekohtumine
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMode("exploration")}
-              className={`rounded-full border px-6 py-3 text-xs uppercase tracking-[0.25em] transition ${
-                mode === "exploration"
-                  ? "border-[#c9a36a] bg-[#efe2ce] text-[#8b642f]"
-                  : "border-[#d8d1c7] text-[#6d655d]"
-              }`}
-            >
-              Avardamine
-            </button>
+            {[
+              ["meeting", "Kohtumine"],
+              ["thought", "Mõttekohtumine"],
+              ["exploration", "Avardamine"],
+            ].map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setMode(value as QuestionMode)}
+                className={`rounded-full border px-6 py-3 text-xs uppercase tracking-[0.25em] transition ${
+                  mode === value
+                    ? "border-[#c9a36a] bg-[#efe2ce] text-[#8b642f]"
+                    : "border-[#d8d1c7] text-[#6d655d]"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
           <p className="mb-8 text-sm leading-relaxed text-[#8a8278]">
@@ -138,13 +122,11 @@ const continueMeeting = searchParams.get("continue") === "1";
             placeholder="Minu küsimus..."
           />
 
-          <button
-            type="button"
-            onClick={sendQuestion}
-            className="mt-8 inline-block rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-          >
-            Saada Aimile
-          </button>
+          <div className="mt-8 flex justify-center">
+            <ExpectumButton onClick={sendQuestion}>
+              Saada Aimile
+            </ExpectumButton>
+          </div>
 
           <p className="mt-16 text-sm text-[#8a8278]">
             Peatu ja hinga. Liikumine jätkub.

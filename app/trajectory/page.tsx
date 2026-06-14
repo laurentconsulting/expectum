@@ -5,6 +5,7 @@ import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 import ExpectumCard from "@/components/ExpectumCard";
 import ExpectumSection from "@/components/ExpectumSection";
+import ExpectumButton from "@/components/ExpectumButton";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import { supabase } from "@/lib/supabaseClient";
 
@@ -215,24 +216,18 @@ export default function Trajectory() {
             {loading ? "Suuna märkamine..." : trajectory}
           </ExpectumCard>
 
-          {saved && <p className="mt-6 text-[#8b642f]">Suund on salvestatud.</p>}
+          {saved && (
+            <p className="mt-6 text-[#8b642f]">Suund on salvestatud.</p>
+          )}
 
           <div className="mt-12 flex flex-col flex-wrap justify-center gap-4 md:flex-row">
-            <button
-              type="button"
-              onClick={openTrajectory}
-              className="rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-            >
+            <ExpectumButton onClick={openTrajectory}>
               Märka uuesti
-            </button>
+            </ExpectumButton>
 
-            <button
-              type="button"
-              onClick={saveTrajectory}
-              className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
-            >
+            <ExpectumButton onClick={saveTrajectory} variant="soft">
               Salvesta suund
-            </button>
+            </ExpectumButton>
           </div>
         </ExpectumSection>
       </ExpectumPage>

@@ -105,6 +105,11 @@ export default function Settings() {
       text: "Kaja, mille osaline on lubanud ühisesse ruumi liikuda.",
     },
     {
+      href: "/collective-echo",
+      title: "Ühine Kaja",
+      text: "Kinnitatud Kaja ja korduvad märkamised ühises ruumis.",
+    },
+    {
       href: "/statistics",
       title: "Koond",
       text: "Vaikne ülevaade sellest, mida Mälu hoiab.",
