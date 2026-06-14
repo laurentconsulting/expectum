@@ -1,7 +1,22 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function Home() {
+  const [signedIn, setSignedIn] = useState(false);
+
+  useEffect(() => {
+    async function checkUser() {
+      const { data } = await supabase.auth.getUser();
+      setSignedIn(!!data.user);
+    }
+
+    checkUser();
+  }, []);
+
   return (
     <ExpectumPage
       footerLinks={[
@@ -47,7 +62,46 @@ export default function Home() {
         </p>
 
         <div className="flex flex-col flex-wrap justify-center gap-4 md:flex-row">
-         
+          {signedIn ? (
+            <>
+              <a
+                href="/attunement"
+                className="rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
+              >
+                Ava kohtumine
+              </a>
+
+              <a
+                href="/question?mode=exploration"
+                className="rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
+              >
+                Ava avardamine
+              </a>
+
+              <a
+                href="/path"
+                className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
+              >
+                Vaata teekonda
+              </a>
+            </>
+          ) : (
+            <>
+              <a
+                href="/enter"
+                className="rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
+              >
+                Ava kohtumine
+              </a>
+
+              <a
+                href="/enter"
+                className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
+              >
+                Sisene
+              </a>
+            </>
+          )}
         </div>
 
         <p className="mt-20 text-sm text-[#8a8278]">

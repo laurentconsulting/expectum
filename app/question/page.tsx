@@ -10,13 +10,21 @@ import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 type QuestionMode = "meeting" | "thought" | "exploration";
 
 function QuestionContent() {
-  const [question, setQuestion] = useState("");
-  const [mode, setMode] = useState<QuestionMode>("meeting");
-
   const router = useRouter();
-  const searchParams = useSearchParams();
+const searchParams = useSearchParams();
 
-  const continueMeeting = searchParams.get("continue") === "1";
+const initialMode = searchParams.get("mode");
+
+const getInitialMode = (): QuestionMode => {
+  if (initialMode === "thought") return "thought";
+  if (initialMode === "exploration") return "exploration";
+  return "meeting";
+};
+
+const [question, setQuestion] = useState("");
+const [mode, setMode] = useState<QuestionMode>(getInitialMode);
+
+const continueMeeting = searchParams.get("continue") === "1";
 
   function sendQuestion() {
     if (!question.trim()) return;
