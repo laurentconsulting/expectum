@@ -16,6 +16,10 @@ const principles = [
     text: "Ühine Kaja hoiab märkamisi, mis on kohtumistes nähtavale tulnud.",
   },
   {
+  label: "Aim märkamise kiht",
+  text: "Aim võib märgata ühises Kajas korduvaid kõlasid. Ta ei kasuta neid inimese määramiseks. Ta kasutab neid kohtumise avardamiseks.",
+},
+  {
     label: "Mitte määramine",
     text: "Ühine mälu ei määra inimest. Ta ei ütle, kes inimene on.",
   },
