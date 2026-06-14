@@ -15,6 +15,12 @@ import type {
   ReflectionMode,
 } from "@/lib/expectumTypes";
 
+function getModeLabel(mode?: string) {
+  if (mode === "thought") return "Mõttekohtumine";
+  if (mode === "exploration") return "Avardamine";
+  return "Kohtumine";
+}
+
 export default function Reflection() {
   const [question, setQuestion] = useState("Aim");
   const [thread, setThread] = useState<ThreadMessage[]>([]);
@@ -165,7 +171,7 @@ export default function Reflection() {
       console.error(error);
 
       const fallback =
-        "Praegu ei saanud peegeldust avada. Peatu hetkeks ja proovi uuesti.";
+        "Praegu ei saanud märkamist avada. Peatu hetkeks ja proovi uuesti.";
 
       const assistantMessage: ThreadMessage = {
         role: "assistant",
@@ -332,7 +338,7 @@ export default function Reflection() {
     });
 
     if (!response.ok) {
-      console.error("Kaja ei saanud ühisesse ruumi jagad.");
+      console.error("Kaja ei saanud ühisesse ruumi liikuda.");
       return;
     }
 
@@ -345,6 +351,8 @@ export default function Reflection() {
     setSharedIds(updated.map((item) => item.id));
   }
 
+  const currentMode = getCurrentMode();
+
   return (
     <ExpectumAuthGate>
       <ExpectumPage className="bg-[#f7f1e8]">
@@ -352,140 +360,142 @@ export default function Reflection() {
           <div className="text-center">
             <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
               <ExpectumSymbol name="meeting" size="header" />
-            <span>Kohtumine</span>
-          </p>
+              <span>{getModeLabel(currentMode)}</span>
+            </p>
 
-          <h1 className="mb-12 text-4xl font-light leading-tight md:text-6xl">
-            Mõni küsimus kujuneb alles siis,
-            kui talle antakse aega.
-          </h1>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="mb-8 max-h-[640px] overflow-y-auto rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left"
-        >
-          <p className="mb-6 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-            Kohtumine
-          </p>
-
-          <div className="space-y-8">
-            {thread.map((message, index) => {
-              const isAssistant = message.role === "assistant";
-              const isSaved = landmarkIds.includes(message.createdAt);
-              const isShared = sharedIds.includes(message.createdAt);
-
-              return (
-                <div key={`${message.createdAt}-${index}`}>
-                  <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    {message.role === "user" ? "Sina" : ""}
-                  </p>
-
-                  <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
-                    {message.text}
-                  </p>
-
-                  {isAssistant && (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => toggleLandmark(message, index)}
-                        className="mt-4 rounded-full border border-[#d8d1c7] px-5 py-2 text-xs uppercase tracking-[0.2em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
-                      >
-                        {isSaved
-                          ? "✓ Kaja salvestatud — eemalda"
-                          : "☆ Salvesta Kaja"}
-                      </button>
-
-                      {isSaved && (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => toggleSharedInsight(message, index)}
-                            className="mt-3 rounded-full border border-[#d8d1c7] px-5 py-2 text-xs uppercase tracking-[0.2em] text-[#6d655d] transition hover:bg-[#f1ebe3] md:ml-3"
-                          >
-                            {isShared
-                              ? "✓ Esitatud kinnitamiseks"
-                              : "Luba Kajal liikuda"}
-                          </button>
-
-                          {isShared && (
-                            <p className="mt-3 text-sm text-[#8a8278]">
-                              Kaja jõuab ühisesse ruumi alles pärast kinnitamist.
-                            </p>
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
-                </div>
-              );
-            })}
-
-            {loading && (
-              <p className="text-lg leading-relaxed text-[#4f4942]">
-                Kohtumine avaneb...
-              </p>
-            )}
-
-            {!loading && count < 3 && (
-              <div className="border-t border-[#e1c99b] pt-6">
-                <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                  Sinu jätkuvastus
-                </p>
-
-                <textarea
-                  value={followUp}
-                  onChange={(event) => setFollowUp(event.target.value)}
-                  className="min-h-32 w-full rounded-2xl border border-[#d7b985] bg-white/45 p-5 text-lg leading-relaxed outline-none transition focus:border-[#b78a4a] focus:bg-white/65"
-                  placeholder="Kirjuta siia, kui kohtumine jätkub..."
-                />
-
-                <button
-                  type="button"
-                  onClick={sendFollowUp}
-                  className="mt-6 rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-                >
-                  Jätka kohtumist
-                </button>
-              </div>
-            )}
-
-            {!loading && count >= 3 && (
-              <div className="border-t border-[#e1c99b] pt-6">
-                <p className="mb-4 text-lg leading-relaxed text-[#4f4942]">
-                  Kõik ei avane järgmise küsimusega. Vahel avaneb midagi
-                  pausis.
-                </p>
-
-                <p className="text-base leading-relaxed text-[#6d655d]">
-                  Kohtumise saad hiljem uuesti avada mälu, kohtumised alt. Oluline ei ole
-                  küsimuste hulk, vaid see, mida küsimus avab.
-                </p>
-              </div>
-            )}
+            <h1 className="mb-12 text-4xl font-light leading-tight md:text-6xl">
+              Mõni küsimus kujuneb alles siis, kui talle antakse aega.
+            </h1>
           </div>
-        </div>
 
-        <div className="mt-12 flex flex-col justify-center gap-4 md:flex-row">
-          {count >= 3 && (
+          <div
+            ref={scrollRef}
+            className="mb-8 max-h-[640px] overflow-y-auto rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left"
+          >
+            <p className="mb-6 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
+              {getModeLabel(currentMode)}
+            </p>
+
+            <div className="space-y-8">
+              {thread.map((message, index) => {
+                const isAssistant = message.role === "assistant";
+                const isSaved = landmarkIds.includes(message.createdAt);
+                const isShared = sharedIds.includes(message.createdAt);
+
+                return (
+                  <div key={`${message.createdAt}-${index}`}>
+                    <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
+                      {message.role === "user" ? "Sina" : "Aim"}
+                    </p>
+
+                    <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
+                      {message.text}
+                    </p>
+
+                    {isAssistant && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => toggleLandmark(message, index)}
+                          className="mt-4 rounded-full border border-[#d8d1c7] px-5 py-2 text-xs uppercase tracking-[0.2em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
+                        >
+                          {isSaved
+                            ? "✓ Kaja salvestatud — eemalda"
+                            : "☆ Salvesta Kaja"}
+                        </button>
+
+                        {isSaved && (
+                          <>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                toggleSharedInsight(message, index)
+                              }
+                              className="mt-3 rounded-full border border-[#d8d1c7] px-5 py-2 text-xs uppercase tracking-[0.2em] text-[#6d655d] transition hover:bg-[#f1ebe3] md:ml-3"
+                            >
+                              {isShared
+                                ? "✓ Esitatud kinnitamiseks"
+                                : "Luba Kajal liikuda"}
+                            </button>
+
+                            {isShared && (
+                              <p className="mt-3 text-sm text-[#8a8278]">
+                                Kaja jõuab ühisesse ruumi alles pärast
+                                kinnitamist.
+                              </p>
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+
+              {loading && (
+                <p className="text-lg leading-relaxed text-[#4f4942]">
+                  Kohtumine avaneb...
+                </p>
+              )}
+
+              {!loading && count < 3 && (
+                <div className="border-t border-[#e1c99b] pt-6">
+                  <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
+                    Sinu jätkuvastus
+                  </p>
+
+                  <textarea
+                    value={followUp}
+                    onChange={(event) => setFollowUp(event.target.value)}
+                    className="min-h-32 w-full rounded-2xl border border-[#d7b985] bg-white/45 p-5 text-lg leading-relaxed outline-none transition focus:border-[#b78a4a] focus:bg-white/65"
+                    placeholder="Kirjuta siia, kui kohtumine jätkub..."
+                  />
+
+                  <button
+                    type="button"
+                    onClick={sendFollowUp}
+                    className="mt-6 rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
+                  >
+                    Jätka kohtumist
+                  </button>
+                </div>
+              )}
+
+              {!loading && count >= 3 && (
+                <div className="border-t border-[#e1c99b] pt-6">
+                  <p className="mb-4 text-lg leading-relaxed text-[#4f4942]">
+                    Kõik ei avane järgmise küsimusega. Vahel avaneb midagi
+                    pausis.
+                  </p>
+
+                  <p className="text-base leading-relaxed text-[#6d655d]">
+                    Kohtumise saad hiljem uuesti avada Mälu, Kohtumised alt.
+                    Oluline ei ole küsimuste hulk, vaid see, mida küsimus avab.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-12 flex flex-col justify-center gap-4 md:flex-row">
+            {count >= 3 && (
+              <a
+                href="/pause"
+                className="rounded-full border border-[#c9a36a] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#8b642f]"
+              >
+                Peatu hetkeks
+              </a>
+            )}
+
             <a
               href="/pause"
-              className="rounded-full border border-[#c9a36a] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#8b642f]"
+              className="rounded-full border border-[#d8d1c7] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#6d655d]"
             >
-              Peatu hetkeks
+              Puhka
             </a>
-          )}
-
-          <a
-            href="/pause"
-            className="rounded-full border border-[#d8d1c7] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#6d655d]"
-          >
-            Puhka
-          </a>
-        </div>
-      </section>
-    </ExpectumPage>
+          </div>
+        </section>
+      </ExpectumPage>
     </ExpectumAuthGate>
   );
 }

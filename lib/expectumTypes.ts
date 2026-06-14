@@ -1,4 +1,4 @@
-export type ReflectionMode = "meeting" | "thought";
+export type ReflectionMode = "meeting" | "thought" | "exploration";
 
 export type ThreadMessage = {
   role: "user" | "assistant";

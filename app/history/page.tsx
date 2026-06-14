@@ -8,12 +8,14 @@ import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 
+type MeetingMode = "meeting" | "thought" | "exploration";
+
 type ThreadMessage = {
   role: "user" | "assistant";
   text: string;
   createdAt: string;
   sessionId?: string;
-  mode?: "meeting" | "thought";
+  mode?: MeetingMode;
 };
 
 type MeetingRow = {
@@ -21,7 +23,7 @@ type MeetingRow = {
   question: string | null;
   reflection: string | null;
   thread: ThreadMessage[] | null;
-  mode: "meeting" | "thought" | null;
+  mode: MeetingMode | null;
   created_at: string;
 };
 
@@ -30,6 +32,24 @@ type SessionGroup = {
   date: string;
   messages: ThreadMessage[];
 };
+
+function getModeLabel(mode?: string) {
+  if (mode === "thought") return "Mõttekohtumine";
+  if (mode === "exploration") return "Avardamine";
+  return "Kohtumine";
+}
+
+function getSessionModeValue(session: SessionGroup): MeetingMode {
+  if (session.messages.some((message) => message.mode === "exploration")) {
+    return "exploration";
+  }
+
+  if (session.messages.some((message) => message.mode === "thought")) {
+    return "thought";
+  }
+
+  return "meeting";
+}
 
 export default function History() {
   const [sessions, setSessions] = useState<SessionGroup[]>([]);
@@ -91,8 +111,9 @@ export default function History() {
 
       messages.forEach((message) => {
         const sessionId = message.sessionId || item.id;
-        const date = new Date(message.createdAt || item.created_at)
-          .toLocaleDateString("et-EE");
+        const date = new Date(
+          message.createdAt || item.created_at
+        ).toLocaleDateString("et-EE");
 
         if (!sessionMap.has(sessionId)) {
           sessionMap.set(sessionId, {
@@ -114,7 +135,10 @@ export default function History() {
         );
 
         if (!alreadyExists) {
-          group.messages.push(message);
+          group.messages.push({
+            ...message,
+            mode: message.mode || item.mode || "meeting",
+          });
         }
       });
     });
@@ -139,15 +163,18 @@ export default function History() {
   }
 
   function continueSession(session: SessionGroup) {
+    const mode = getSessionModeValue(session);
+
     localStorage.setItem(EXPECTUM_STORAGE.currentSession, session.sessionId);
     localStorage.setItem(
       EXPECTUM_STORAGE.thread,
-      JSON.stringify(session.messages)
+      JSON.stringify(
+        session.messages.map((message) => ({
+          ...message,
+          mode: message.mode || mode,
+        }))
+      )
     );
-
-    const mode = session.messages.some((message) => message.mode === "thought")
-      ? "thought"
-      : "meeting";
 
     localStorage.setItem(EXPECTUM_STORAGE.reflectionMode, mode);
     localStorage.setItem(EXPECTUM_STORAGE.questionCount, "0");
@@ -158,11 +185,7 @@ export default function History() {
   }
 
   function getSessionMode(session: SessionGroup) {
-    const hasThought = session.messages.some(
-      (message) => message.mode === "thought"
-    );
-
-    return hasThought ? "Mõttekohtumine" : "Kohtumine";
+    return getModeLabel(getSessionModeValue(session));
   }
 
   async function clearHistory() {
@@ -205,7 +228,7 @@ export default function History() {
           },
           {
             href: "/expectum",
-            label: "Expectum?",
+            label: "Expectum",
             symbol: "aim",
           },
         ]}
