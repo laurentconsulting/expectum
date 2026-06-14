@@ -77,6 +77,11 @@ export default function Aim() {
     <ExpectumPage
       footerLinks={[
         {
+  href: "/aim-memory",
+  label: "Aim Mälu",
+  symbol: "memory",
+},
+        {
           href: "/expectum",
           label: "Expectum",
           symbol: "aim",
@@ -86,6 +91,7 @@ export default function Aim() {
           label: "Inimene ja AI",
           symbol: "meeting",
         },
+        
       ]}
     >
       <section className="mx-auto max-w-4xl text-center">

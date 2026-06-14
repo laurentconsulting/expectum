@@ -223,6 +223,11 @@ export default function Expectum() {
           symbol: "aim",
         },
         {
+          href: "/aim-memory",
+          label: "Aim Mälu",
+          symbol: "memory",
+  },
+        {
           href: "/human-and-ai",
           label: "Inimene ja AI",
           symbol: "meeting",
