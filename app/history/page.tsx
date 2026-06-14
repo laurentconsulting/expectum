@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabaseClient";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import ExpectumButton from "@/components/ExpectumButton";
 
 type MeetingMode = "meeting" | "thought" | "exploration";
 
@@ -283,26 +284,25 @@ export default function History() {
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => continueSession(session)}
-                    className="mt-6 rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-                  >
-                    Ava kohtumine
-                  </button>
+                 <div className="mt-6">
+  <ExpectumButton
+    onClick={() => continueSession(session)}
+  >
+    Ava kohtumine
+  </ExpectumButton>
+</div>
                 </div>
               ))}
             </div>
           )}
 
           <div className="mt-12 flex justify-center">
-            <button
-              type="button"
-              onClick={clearHistory}
-              className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
-            >
-              Puhasta kohtumised
-            </button>
+            <ExpectumButton
+  onClick={clearHistory}
+  variant="soft"
+>
+  Puhasta kohtumised
+</ExpectumButton>
           </div>
         </section>
       </ExpectumPage>

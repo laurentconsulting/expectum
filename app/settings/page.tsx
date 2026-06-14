@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabaseClient";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import ExpectumButton from "@/components/ExpectumButton";
 
 export default function Settings() {
   const [message, setMessage] = useState("");
@@ -180,14 +181,13 @@ export default function Settings() {
           </div>
 
           <div className="mt-12 flex justify-center">
-            <button
-              type="button"
-              onClick={clearMemory}
-              disabled={clearing}
-              className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3] disabled:opacity-50"
-            >
-              {clearing ? "Mälu puhastamine..." : "Puhasta mälu"}
-            </button>
+            <ExpectumButton
+  onClick={clearMemory}
+  disabled={clearing}
+  variant="soft"
+>
+  {clearing ? "Mälu puhastamine..." : "Puhasta mälu"}
+</ExpectumButton>
           </div>
 
           {message && <p className="mt-8 text-[#8b642f]">{message}</p>}

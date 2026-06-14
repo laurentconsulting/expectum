@@ -5,6 +5,7 @@ import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import ExpectumButton from "@/components/ExpectumButton";
 import { supabase } from "@/lib/supabaseClient";
 
 import type {
@@ -84,10 +85,7 @@ export default function Reflection() {
   async function saveMeetingToSupabase(historyItem: HistoryItem) {
     const { data } = await supabase.auth.getUser();
 
-    if (!data.user) {
-      console.warn("Kohtumist ei salvestatud pilve, sest kasutaja puudub.");
-      return;
-    }
+    if (!data.user) return;
 
     const { error } = await supabase.from("meetings").insert({
       user_id: data.user.id,
@@ -376,15 +374,18 @@ export default function Reflection() {
               {getModeLabel(currentMode)}
             </p>
 
-            <div className="space-y-8">
+            <div className="space-y-6">
               {thread.map((message, index) => {
                 const isAssistant = message.role === "assistant";
                 const isSaved = landmarkIds.includes(message.createdAt);
                 const isShared = sharedIds.includes(message.createdAt);
 
                 return (
-                  <div key={`${message.createdAt}-${index}`}>
-                    <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
+                  <div
+                    key={`${message.createdAt}-${index}`}
+                    className="rounded-3xl border border-[#e1c99b] bg-white/35 p-6"
+                  >
+                    <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
                       {message.role === "user" ? "Sina" : "Aim"}
                     </p>
 
@@ -393,49 +394,48 @@ export default function Reflection() {
                     </p>
 
                     {isAssistant && (
-                      <>
-                        <button
-                          type="button"
+                      <div className="mt-5 flex flex-col gap-3 md:flex-row md:flex-wrap">
+                        <ExpectumButton
                           onClick={() => toggleLandmark(message, index)}
-                          className="mt-4 rounded-full border border-[#d8d1c7] px-5 py-2 text-xs uppercase tracking-[0.2em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
+                          variant="soft"
+                          className="px-5 py-2 text-xs tracking-[0.2em]"
                         >
                           {isSaved
                             ? "✓ Kaja salvestatud — eemalda"
                             : "☆ Salvesta Kaja"}
-                        </button>
+                        </ExpectumButton>
 
                         {isSaved && (
-                          <>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                toggleSharedInsight(message, index)
-                              }
-                              className="mt-3 rounded-full border border-[#d8d1c7] px-5 py-2 text-xs uppercase tracking-[0.2em] text-[#6d655d] transition hover:bg-[#f1ebe3] md:ml-3"
-                            >
-                              {isShared
-                                ? "✓ Esitatud kinnitamiseks"
-                                : "Luba Kajal liikuda"}
-                            </button>
-
-                            {isShared && (
-                              <p className="mt-3 text-sm text-[#8a8278]">
-                                Kaja jõuab ühisesse ruumi alles pärast
-                                kinnitamist.
-                              </p>
-                            )}
-                          </>
+                          <ExpectumButton
+                            onClick={() =>
+                              toggleSharedInsight(message, index)
+                            }
+                            variant="soft"
+                            className="px-5 py-2 text-xs tracking-[0.2em]"
+                          >
+                            {isShared
+                              ? "✓ Kaja liigub kinnitamise ootele"
+                              : "Luba Kajal liikuda"}
+                          </ExpectumButton>
                         )}
-                      </>
+
+                        {isShared && (
+                          <p className="basis-full text-sm text-[#8a8278]">
+                            Kaja jõuab ühisesse ruumi pärast kinnitamist.
+                          </p>
+                        )}
+                      </div>
                     )}
                   </div>
                 );
               })}
 
               {loading && (
-                <p className="text-lg leading-relaxed text-[#4f4942]">
-                  Kohtumine avaneb...
-                </p>
+                <div className="rounded-3xl border border-[#e1c99b] bg-white/35 p-6">
+                  <p className="text-lg leading-relaxed text-[#4f4942]">
+                    Kohtumine avaneb...
+                  </p>
+                </div>
               )}
 
               {!loading && count < 3 && (
@@ -451,13 +451,11 @@ export default function Reflection() {
                     placeholder="Kirjuta siia, kui kohtumine jätkub..."
                   />
 
-                  <button
-                    type="button"
-                    onClick={sendFollowUp}
-                    className="mt-6 rounded-full border border-[#c9a36a] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#8b642f] transition hover:bg-[#efe2ce]"
-                  >
-                    Jätka kohtumist
-                  </button>
+                  <div className="mt-6">
+                    <ExpectumButton onClick={sendFollowUp}>
+                      Jätka kohtumist
+                    </ExpectumButton>
+                  </div>
                 </div>
               )}
 
@@ -479,20 +477,14 @@ export default function Reflection() {
 
           <div className="mt-12 flex flex-col justify-center gap-4 md:flex-row">
             {count >= 3 && (
-              <a
-                href="/pause"
-                className="rounded-full border border-[#c9a36a] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#8b642f]"
-              >
+              <ExpectumButton href="/pause">
                 Peatu hetkeks
-              </a>
+              </ExpectumButton>
             )}
 
-            <a
-              href="/pause"
-              className="rounded-full border border-[#d8d1c7] px-8 py-4 text-center text-sm uppercase tracking-[0.25em] text-[#6d655d]"
-            >
-              Puhka
-            </a>
+            <ExpectumButton href="/pause" variant="soft">
+              Jäta kohtumine puhkama
+            </ExpectumButton>
           </div>
         </section>
       </ExpectumPage>
