@@ -147,6 +147,27 @@ export default function ExpectumLanguage() {
               Ta aitab märgata, mitte otsustada.
             </p>
           </section>
+          <section className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-lg leading-relaxed text-[#4f4942]">
+  <h2 className="mb-6 text-2xl font-light">
+    Aim Mälu
+  </h2>
+
+  <p className="mb-4">
+    Aim võib kasutada seda, mida inimene on otsustanud hoida.
+  </p>
+
+  <p className="mb-4">
+    Aim ei hoia seda, mille inimene on otsustanud puhastada.
+  </p>
+
+  <p className="mb-4">
+    Ühine Kaja hoiab märkamisi, mis on kohtumistes nähtavale tulnud.
+  </p>
+
+  <p>
+    Ühine mälu ei määra inimest. Ta võib avardada vaadet, kuid ei asenda kohtumist.
+  </p>
+</section>
         </div>
       </section>
     </ExpectumPage>
