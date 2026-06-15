@@ -23,13 +23,16 @@ export default function ExpectumPage({
   return (
     <main
       className={`fixed inset-0 overflow-hidden text-[#4f4942] ${className}`}
+      style={{ height: "100dvh" }}
     >
       <ExpectumBackground />
 
-      <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col px-6">
-        <ExpectumHeader />
+      <div className="relative z-10 mx-auto grid h-full max-w-6xl grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden px-6">
+        <div className="min-h-0">
+          <ExpectumHeader />
+        </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-10">
+        <div className="min-h-0 overflow-y-auto overscroll-contain py-10">
           <div className="flex min-h-full">
             <div className="my-auto w-full">{children}</div>
           </div>
