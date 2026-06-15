@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { EXPECTUM_VOICE } from "../lib/expectumVoice";
+import { EXPECTUM_VOICE } from "@/lib/expectumVoice";
 import { getCollectiveAimMemory } from "@/lib/collectiveAimMemory";
 
 const client = new OpenAI({

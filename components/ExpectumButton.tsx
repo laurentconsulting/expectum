@@ -20,12 +20,12 @@ export default function ExpectumButton({
   className = "",
 }: ExpectumButtonProps) {
   const baseClass =
-    "rounded-full border px-8 py-4 text-sm uppercase tracking-[0.25em] transition disabled:opacity-50";
+    "inline-flex items-center justify-center rounded-full border px-8 py-4 text-center text-sm uppercase tracking-[0.25em] transition duration-500 disabled:opacity-50";
 
   const variantClass =
     variant === "primary"
-      ? "border-[#c9a36a] text-[#8b642f] hover:bg-[#efe2ce]"
-      : "border-[#d8d1c7] text-[#6d655d] hover:bg-[#f1ebe3]";
+      ? "border-[#c9a36a] text-[#8b642f] hover:bg-[#efe2ce]/70"
+      : "border-[#eadcc7] text-[#6d655d] hover:bg-white/45";
 
   const classes = `${baseClass} ${variantClass} ${className}`;
 
@@ -38,12 +38,7 @@ export default function ExpectumButton({
   }
 
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={classes}
-    >
+    <button type={type} onClick={onClick} disabled={disabled} className={classes}>
       {children}
     </button>
   );

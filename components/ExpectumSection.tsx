@@ -21,20 +21,28 @@ export default function ExpectumSection({
   className = "",
 }: ExpectumSectionProps) {
   return (
-    <section className={`mx-auto max-w-4xl text-center ${className}`}>
+    <section
+      className={`mx-auto w-full max-w-4xl text-center ${className}`}
+    >
       {label && (
-        <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
-          {symbol && <ExpectumSymbol name={symbol} size="header" />}
+        <p className="mb-12 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.42em] text-[#b78a4a]">
+          {symbol && (
+            <ExpectumSymbol
+              name={symbol}
+              size="header"
+            />
+          )}
+
           <span>{label}</span>
         </p>
       )}
 
-      <h1 className="mb-6 text-4xl font-light md:text-6xl">
+      <h1 className="mx-auto mb-8 max-w-4xl text-4xl font-light leading-[1.15] md:text-6xl">
         {title}
       </h1>
 
       {intro && (
-        <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-[#5f574f]">
+        <p className="mx-auto mb-16 max-w-2xl text-lg leading-loose text-[#5f574f] md:text-xl">
           {intro}
         </p>
       )}

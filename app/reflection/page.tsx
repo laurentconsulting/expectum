@@ -75,12 +75,16 @@ export default function Reflection() {
   }, [thread, loading]);
 
   function getCurrentMode(): ReflectionMode {
-    return (
-      (localStorage.getItem(
-        EXPECTUM_STORAGE.reflectionMode
-      ) as ReflectionMode) || "meeting"
-    );
+  if (typeof window === "undefined") {
+    return "meeting";
   }
+
+  return (
+    (localStorage.getItem(
+      EXPECTUM_STORAGE.reflectionMode
+    ) as ReflectionMode) || "meeting"
+  );
+}
 
   async function saveMeetingToSupabase(historyItem: HistoryItem) {
     const { data } = await supabase.auth.getUser();
@@ -367,29 +371,29 @@ export default function Reflection() {
           </div>
 
           <div
-            ref={scrollRef}
-            className="mb-8 max-h-[640px] overflow-y-auto rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left"
-          >
+  ref={scrollRef}
+  className="mb-8 max-h-[680px] overflow-y-auto rounded-[2rem] border border-[#efe6d9] bg-white/55 p-8 text-left"
+>
             <p className="mb-6 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
               {getModeLabel(currentMode)}
             </p>
 
-            <div className="space-y-6">
-              {thread.map((message, index) => {
+                <div className="space-y-10">
+                {thread.map((message, index) => {
                 const isAssistant = message.role === "assistant";
                 const isSaved = landmarkIds.includes(message.createdAt);
                 const isShared = sharedIds.includes(message.createdAt);
 
                 return (
                   <div
-                    key={`${message.createdAt}-${index}`}
-                    className="rounded-3xl border border-[#e1c99b] bg-white/35 p-6"
-                  >
-                    <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                      {message.role === "user" ? "Sina" : "Aim"}
-                    </p>
+  key={`${message.createdAt}-${index}`}
+  className="rounded-[2rem] border border-[#efe6d9] bg-white/55 p-8"
+>
+                                    <p className="mb-4 text-xs uppercase tracking-[0.3em] text-[#b78a4a]">
+  {message.role === "user" ? "○ Kohtumine" : "✧ Aim"}
+</p>
 
-                    <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
+<p className="whitespace-pre-line text-lg leading-loose text-[#4f4942]">
                       {message.text}
                     </p>
 
@@ -420,9 +424,9 @@ export default function Reflection() {
                         )}
 
                         {isShared && (
-                          <p className="basis-full text-sm text-[#8a8278]">
-                            Kaja jõuab ühisesse ruumi pärast kinnitamist.
-                          </p>
+  <p className="basis-full text-sm leading-relaxed text-[#8a8278]">
+    ✓ Kaja liigub kinnitamise ootel.
+  </p>
                         )}
                       </div>
                     )}
@@ -431,8 +435,7 @@ export default function Reflection() {
               })}
 
               {loading && (
-                <div className="rounded-3xl border border-[#e1c99b] bg-white/35 p-6">
-                  <p className="text-lg leading-relaxed text-[#4f4942]">
+<div className="rounded-[2rem] border border-[#efe6d9] bg-white/55 p-8">                  <p className="text-lg leading-relaxed text-[#4f4942]">
                     Kohtumine avaneb...
                   </p>
                 </div>
@@ -441,13 +444,13 @@ export default function Reflection() {
               {!loading && count < 3 && (
                 <div className="border-t border-[#e1c99b] pt-6">
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Sinu jätkuvastus
+                    Kohtumine jätkub
                   </p>
 
                   <textarea
                     value={followUp}
                     onChange={(event) => setFollowUp(event.target.value)}
-                    className="min-h-32 w-full rounded-2xl border border-[#d7b985] bg-white/45 p-5 text-lg leading-relaxed outline-none transition focus:border-[#b78a4a] focus:bg-white/65"
+                    className="min-h-36 w-full rounded-[1.75rem] border border-[#efe6d9] bg-white/55 p-6 text-lg leading-loose text-[#4f4942] outline-none transition duration-500 placeholder:text-[#a7a097] focus:border-[#eadcc7] focus:bg-white/70"
                     placeholder="Kirjuta siia, kui kohtumine jätkub..."
                   />
 
