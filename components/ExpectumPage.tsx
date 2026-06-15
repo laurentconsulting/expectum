@@ -22,15 +22,17 @@ export default function ExpectumPage({
 }: ExpectumPageProps) {
   return (
     <main
-      className={`relative min-h-screen overflow-hidden px-6 pb-32 text-[#4f4942] ${className}`}
+      className={`relative h-screen overflow-hidden text-[#4f4942] ${className}`}
     >
       <ExpectumBackground />
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col">
+      <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col px-6">
         <ExpectumHeader />
 
-        <div className="flex flex-1 items-center py-10">
-          <div className="w-full">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto py-10">
+          <div className="flex min-h-full">
+            <div className="my-auto w-full">{children}</div>
+          </div>
         </div>
 
         <footer className="mt-auto flex flex-col items-center justify-between gap-6 border-t border-[#eadcc7] py-8 text-xs uppercase tracking-[0.25em] text-[#8a8278] md:flex-row">
