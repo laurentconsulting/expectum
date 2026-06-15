@@ -22,14 +22,14 @@ export default function ExpectumPage({
 }: ExpectumPageProps) {
   return (
     <main
-      className={`relative h-screen overflow-hidden text-[#4f4942] ${className}`}
+      className={`fixed inset-0 overflow-hidden text-[#4f4942] ${className}`}
     >
       <ExpectumBackground />
 
       <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col px-6">
         <ExpectumHeader />
 
-        <div className="min-h-0 flex-1 overflow-y-auto py-10">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-10">
           <div className="flex min-h-full">
             <div className="my-auto w-full">{children}</div>
           </div>
