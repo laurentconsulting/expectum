@@ -20,36 +20,34 @@ export default function Landmarks() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadEchoes();
+    async function loadEchoes() {
+      const { data: userData } = await supabase.auth.getUser();
+
+      if (!userData.user) {
+        setEchoes([]);
+        setLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("echoes")
+        .select("id, text, question, created_at")
+        .eq("user_id", userData.user.id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Kaja ei saanud Supabase'ist avada.", error);
+        setEchoes([]);
+        setLoading(false);
+        return;
+      }
+
+      setEchoes((data || []) as Echo[]);
+      setLoading(false);
+    }
+
+    void loadEchoes();
   }, []);
-
-  async function loadEchoes() {
-    setLoading(true);
-
-    const { data: userData } = await supabase.auth.getUser();
-
-    if (!userData.user) {
-      setEchoes([]);
-      setLoading(false);
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from("echoes")
-      .select("id, text, question, created_at")
-      .eq("user_id", userData.user.id)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Kaja ei saanud Supabase'ist avada.", error);
-      setEchoes([]);
-      setLoading(false);
-      return;
-    }
-
-    setEchoes((data || []) as Echo[]);
-    setLoading(false);
-  }
 
   async function removeEcho(id: string) {
     const confirmed = window.confirm("Kas soovid selle kaja eemaldada?");
