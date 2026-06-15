@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
-import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import ExpectumMemoryCard from "@/components/ExpectumCard";
+import ExpectumSection from "@/components/ExpectumSection";
+import ExpectumButton from "@/components/ExpectumButton";
 import { supabase } from "@/lib/supabaseClient";
 
 type Echo = {
@@ -93,30 +95,21 @@ export default function Landmarks() {
           },
         ]}
       >
-        <section className="mx-auto max-w-4xl text-center">
-          <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
-            <ExpectumSymbol name="echo" size="header" />
-            <span>Kaja</span>
-          </p>
-
-          <h1 className="mb-12 text-4xl font-light md:text-6xl">
-            Minu kaja
-          </h1>
-
+        <ExpectumSection symbol="echo" label="Kaja" title="Minu kaja">
           {loading ? (
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+            <ExpectumMemoryCard className="border-[#d7b985] bg-white/45 p-8">
               Kaja avanemine...
-            </div>
+            </ExpectumMemoryCard>
           ) : echoes.length === 0 ? (
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+            <ExpectumMemoryCard className="border-[#d7b985] bg-white/45 p-8">
               Ühtegi kaja ei ole veel salvestatud.
-            </div>
+            </ExpectumMemoryCard>
           ) : (
             <div className="space-y-8 text-left">
               {echoes.map((item) => (
-                <div
+                <ExpectumMemoryCard
                   key={item.id}
-                  className="rounded-3xl border border-[#d7b985] bg-white/45 p-8"
+                  className="border-[#d7b985] bg-white/45 p-8"
                 >
                   <p className="mb-6 text-xl leading-relaxed">
                     {item.text}
@@ -138,18 +131,19 @@ export default function Landmarks() {
                     </details>
                   )}
 
-                  <button
+                  <ExpectumButton
                     type="button"
                     onClick={() => removeEcho(item.id)}
-                    className="mt-6 rounded-full border border-[#d8d1c7] px-6 py-3 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
+                    variant="soft"
+                    className="mt-6 px-6 py-3"
                   >
                     Eemalda kaja
-                  </button>
-                </div>
+                  </ExpectumButton>
+                </ExpectumMemoryCard>
               ))}
             </div>
           )}
-        </section>
+        </ExpectumSection>
       </ExpectumPage>
     </ExpectumAuthGate>
   );
