@@ -4,12 +4,14 @@ type ExpectumMemoryCardProps = {
   label?: string;
   children: ReactNode;
   className?: string;
+  contentClassName?: string;
 };
 
 export default function ExpectumMemoryCard({
   label,
   children,
   className = "",
+  contentClassName = "whitespace-pre-line text-base leading-relaxed text-[#6d655d] md:text-lg",
 }: ExpectumMemoryCardProps) {
   return (
     <div
@@ -21,9 +23,7 @@ export default function ExpectumMemoryCard({
         </p>
       )}
 
-      <div className="whitespace-pre-line text-base leading-relaxed text-[#6d655d] md:text-lg">
-        {children}
-      </div>
+      <div className={contentClassName}>{children}</div>
     </div>
   );
 }
