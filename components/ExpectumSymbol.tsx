@@ -7,7 +7,7 @@ type ExpectumSymbolName =
   | "memory"
   | "aim";
 
-type ExpectumSymbolSize = "header" | "card" | "hero";
+type ExpectumSymbolSize = "header" | "footer" | "card" | "hero";
 
 type ExpectumSymbolProps = {
   name: ExpectumSymbolName;
@@ -23,12 +23,14 @@ type ExpectumSymbolConfig = {
 
 const baseSizes: Record<ExpectumSymbolSize, number> = {
   header: 1,
+  footer: 1,
   card: 1.9,
   hero: 4,
 };
 
 const widths: Record<ExpectumSymbolSize, string> = {
   header: "w-[1.25rem]",
+  footer: "w-[1.25rem]",
   card: "w-12",
   hero: "w-20",
 };

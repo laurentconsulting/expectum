@@ -31,7 +31,7 @@ export default function ExpectumFooter({
               className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-[#8a8278] transition hover:text-[#8b642f]"
             >
               {link.symbol && (
-                <ExpectumSymbol name={link.symbol} size="header" />
+                <ExpectumSymbol name={link.symbol} size="footer" />
               )}
 
               <span>{link.label}</span>
