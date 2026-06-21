@@ -24,8 +24,10 @@ export default function ExpectumPage({
       <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col">
         <ExpectumHeader />
 
-        <div className="flex min-h-0 flex-1 items-center overflow-y-auto py-10">
-          <div className="w-full">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="flex min-h-full items-center py-10">
+            <div className="w-full">{children}</div>
+          </div>
         </div>
 
         <ExpectumFooter links={footerLinks} />
