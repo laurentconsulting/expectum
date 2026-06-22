@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import type { User } from "@supabase/supabase-js";
 
@@ -11,16 +11,20 @@ type AuthStatusProps = {
 
 export default function AuthStatus({ onUserChange }: AuthStatusProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const [signingOut, setSigningOut] = useState(false);
 
   const isReturnPage = pathname === "/return";
 
   useEffect(() => {
     async function loadUser() {
       if (isReturnPage) {
+        setSigningOut(true);
         await supabase.auth.signOut();
         setUser(null);
         onUserChange?.(null);
+        setSigningOut(false);
         return;
       }
 
@@ -47,12 +51,18 @@ export default function AuthStatus({ onUserChange }: AuthStatusProps) {
   }, [isReturnPage, onUserChange]);
 
   async function signOut() {
+    if (signingOut) return;
+
+    setSigningOut(true);
     setUser(null);
     onUserChange?.(null);
 
-    await supabase.auth.signOut();
-
-    window.location.replace("/return");
+    try {
+      await supabase.auth.signOut();
+    } finally {
+      router.replace("/return");
+      setSigningOut(false);
+    }
   }
 
   if (!user || isReturnPage) {
@@ -70,6 +80,7 @@ export default function AuthStatus({ onUserChange }: AuthStatusProps) {
     <button
       type="button"
       onClick={signOut}
+      disabled={signingOut}
       className="expectum-soft-pulse inline-flex items-center gap-2 text-[#8a8278] transition-colors duration-500 hover:text-[#8b642f]"
     >
       Välju
