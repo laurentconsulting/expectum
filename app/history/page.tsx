@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import { supabase } from "@/lib/supabaseClient";
 import ExpectumPage from "@/components/ExpectumPage";
-import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumSection from "@/components/ExpectumSection";
+import ExpectumMemoryCard from "@/components/ExpectumMemoryCard";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 import ExpectumButton from "@/components/ExpectumButton";
 
@@ -56,10 +57,6 @@ export default function History() {
   const [sessions, setSessions] = useState<SessionGroup[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-
-  useEffect(() => {
-    loadHistory();
-  }, []);
 
   async function loadHistory() {
     setLoading(true);
@@ -163,6 +160,10 @@ export default function History() {
     setLoading(false);
   }
 
+  useEffect(() => {
+    void Promise.resolve().then(loadHistory);
+  }, []);
+
   function continueSession(session: SessionGroup) {
     const mode = getSessionModeValue(session);
 
@@ -234,24 +235,20 @@ export default function History() {
           },
         ]}
       >
-        <section className="mx-auto max-w-4xl text-center">
-          <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
-            <ExpectumSymbol name="memory" size="header" />
-            <span>Mälu</span>
-          </p>
-
-          <h1 className="mb-12 text-4xl font-light md:text-6xl">
-            Minu kohtumised
-          </h1>
-
+        <ExpectumSection
+          symbol="memory"
+          label="Mälu"
+          title="Minu kohtumised"
+          className="max-w-4xl"
+        >
           {loading ? (
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+            <ExpectumMemoryCard className="text-left">
               Kohtumiste jälgede avamine...
-            </div>
+            </ExpectumMemoryCard>
           ) : sessions.length === 0 ? (
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+            <ExpectumMemoryCard className="text-left">
               Mälus ei ole veel kohtumisi.
-            </div>
+            </ExpectumMemoryCard>
           ) : (
             <div className="space-y-12 text-left">
               {sessions.map((session, index) => (
@@ -268,43 +265,39 @@ export default function History() {
                     {getSessionMode(session)}
                   </p>
 
-                  <div className="max-h-[620px] overflow-y-auto rounded-3xl border border-[#d7b985] bg-white/45 p-6">
-                    <div className="space-y-8">
-                      {session.messages.map((message, messageIndex) => (
-                        <div key={`${message.createdAt}-${messageIndex}`}>
-                          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                            {message.role === "user" ? "Sina" : "Aim"}
-                          </p>
+                  <ExpectumMemoryCard
+                    className="max-h-[620px] overflow-y-auto p-6 text-left"
+                    contentClassName="space-y-8"
+                  >
+                    {session.messages.map((message, messageIndex) => (
+                      <div key={`${message.createdAt}-${messageIndex}`}>
+                        <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
+                          {message.role === "user" ? "Sina" : "Aim"}
+                        </p>
 
-                          <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
-                            {message.text}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
+                        <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
+                          {message.text}
+                        </p>
+                      </div>
+                    ))}
+                  </ExpectumMemoryCard>
+
+                  <div className="mt-6">
+                    <ExpectumButton onClick={() => continueSession(session)}>
+                      Ava kohtumine
+                    </ExpectumButton>
                   </div>
-
-                 <div className="mt-6">
-  <ExpectumButton
-    onClick={() => continueSession(session)}
-  >
-    Ava kohtumine
-  </ExpectumButton>
-</div>
                 </div>
               ))}
             </div>
           )}
 
           <div className="mt-12 flex justify-center">
-            <ExpectumButton
-  onClick={clearHistory}
-  variant="soft"
->
-  Puhasta kohtumised
-</ExpectumButton>
+            <ExpectumButton onClick={clearHistory} variant="soft">
+              Puhasta kohtumised
+            </ExpectumButton>
           </div>
-        </section>
+        </ExpectumSection>
       </ExpectumPage>
     </ExpectumAuthGate>
   );

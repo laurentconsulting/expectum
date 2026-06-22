@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
-import ExpectumSymbol from "@/components/ExpectumSymbol";
+import ExpectumSection from "@/components/ExpectumSection";
+import ExpectumMemoryCard from "@/components/ExpectumMemoryCard";
 import ExpectumButton from "@/components/ExpectumButton";
 import { supabase } from "@/lib/supabaseClient";
 
@@ -38,21 +39,14 @@ export default function Home() {
         },
       ]}
     >
-      <section className="mx-auto flex min-h-full max-w-5xl flex-col items-center justify-center text-center">
-        <p className="mb-10 inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.4em] text-[#b78a4a]">
-          <ExpectumSymbol name="aim" size="header" />
-          <span>Expectum</span>
-        </p>
-
-        <h1 className="mb-8 text-5xl font-light leading-tight md:text-7xl">
-          Sa ei pea siin kiirustama.
-        </h1>
-
-        <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-[#5f574f] md:text-2xl">
-          Expectum on kohtumise ruum.
-        </p>
-
-        <p className="mx-auto mb-14 max-w-2xl text-base leading-relaxed text-[#6d655d] md:text-lg">
+      <ExpectumSection
+        symbol="aim"
+        label="Expectum"
+        title="Sa ei pea siin kiirustama."
+        intro="Expectum on kohtumise ruum."
+        className="max-w-5xl"
+      >
+        <ExpectumMemoryCard className="mx-auto mb-14 max-w-2xl">
           Siin võib avaneda küsimus.
           <br />
           Siin võib jääda kõlama Kaja.
@@ -60,7 +54,7 @@ export default function Home() {
           Siin võib nähtavale tulla Suund.
           <br />
           Aim ei määra tähendust. Ta hoiab ruumi kohtumisele.
-        </p>
+        </ExpectumMemoryCard>
 
         <div className="flex flex-col flex-wrap justify-center gap-4 md:flex-row">
           {signedIn ? (
@@ -90,10 +84,10 @@ export default function Home() {
           )}
         </div>
 
-        <p className="mt-20 text-sm text-[#8a8278]">
+        <ExpectumMemoryCard className="mx-auto mt-20 max-w-xl border-transparent bg-transparent px-0 py-0 shadow-none">
           Alustada võib sellest, mis Sind puudutab.
-        </p>
-      </section>
+        </ExpectumMemoryCard>
+      </ExpectumSection>
     </ExpectumPage>
   );
 }
