@@ -470,6 +470,27 @@ Intentional exception: the statistics page header was not converted to
 not a one-to-one parity match for this page. Forcing the conversion would be a
 layout finish decision rather than an obvious consistency cleanup.
 
+## Implementation Note: Card and Section Consistency Pass 1.0b
+
+The next smallest safe target from the inspected memory/path overview pages was
+`app/timeline/page.tsx`.
+
+- Timeline loading, empty, and timeline item panels now use `ExpectumCard`
+  instead of repeated manual rounded card wrappers.
+- Existing rounded corners, border color, background opacity, padding, text,
+  ordering, data loading behavior, routes, auth, Supabase logic, memory
+  behavior, and visual language were preserved.
+
+Intentional exceptions:
+
+- `app/path/page.tsx` was left unchanged because it already uses
+  `ExpectumSection` and `ExpectumCard`.
+- `app/settings/page.tsx` was left unchanged because its repeated card-like
+  elements are navigation anchors; converting them to `ExpectumCard` would need
+  a separate link-card decision.
+- The Timeline page header was not converted to `ExpectumSection` because the
+  current spacing is not a one-to-one parity match.
+
 ## Recommended Design Finish Pass
 
 A safe future design finish pass should be deliberately small:

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import ExpectumCard from "@/components/ExpectumCard";
 import { supabase } from "@/lib/supabaseClient";
 import {
   getMeetingEncounterSummaries,
@@ -181,19 +182,20 @@ export default function Timeline() {
           </p>
 
           {loading ? (
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+            <ExpectumCard className="rounded-3xl border-[#d7b985] bg-white/45 p-8 backdrop-blur-none">
               Ajajoone jälgede avamine...
-            </div>
+            </ExpectumCard>
           ) : items.length === 0 ? (
-            <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left">
+            <ExpectumCard className="rounded-3xl border-[#d7b985] bg-white/45 p-8 backdrop-blur-none">
               Ajajoone jaoks ei ole veel piisavalt jälgi.
-            </div>
+            </ExpectumCard>
           ) : (
             <div className="space-y-8 text-left">
               {items.map((item, index) => (
-                <div
+                <ExpectumCard
                   key={`${item.createdAt}-${item.type}-${index}`}
-                  className="rounded-3xl border border-[#d7b985] bg-white/45 p-8"
+                  className="rounded-3xl border-[#d7b985] bg-white/45 p-8 backdrop-blur-none"
+                  contentClassName="leading-relaxed"
                 >
                   <p className="mb-3 text-sm text-[#8a8278]">
                     {new Date(item.createdAt).toLocaleDateString("et-EE")}
@@ -206,7 +208,7 @@ export default function Timeline() {
                   <p className="whitespace-pre-line text-lg leading-relaxed text-[#4f4942]">
                     {item.text}
                   </p>
-                </div>
+                </ExpectumCard>
               ))}
             </div>
           )}
