@@ -14,6 +14,20 @@ export type MeetingThreadSnapshot<
   created_at: string;
 };
 
+export type CountableMeetingSnapshot<
+  TMessage extends NormalizableThreadMessage = NormalizableThreadMessage,
+> = MeetingThreadSnapshot<TMessage> & {
+  mode?: string | null;
+};
+
+export type MeetingCountSummary = {
+  rowCount: number;
+  encounterCount: number;
+  meetingCount: number;
+  thoughtCount: number;
+  explorationCount: number;
+};
+
 function getMessageIdentity(message: NormalizableThreadMessage) {
   if (!message.role || typeof message.text !== "string" || !message.createdAt) {
     return null;
@@ -136,4 +150,57 @@ export function normalizeMeetingThreadSnapshots<
         : meeting.thread,
     };
   });
+}
+
+/**
+ * Counts distinct encounter/session identities at read time while retaining the
+ * raw row count separately for technical diagnostics. Source rows are not
+ * changed. A row ID is used only when no session ID is present in its thread.
+ */
+export function getMeetingCountSummary<
+  TMessage extends NormalizableThreadMessage,
+  TMeeting extends CountableMeetingSnapshot<TMessage>,
+>(meetings: readonly TMeeting[]): MeetingCountSummary {
+  const encounterModes = new Map<string, string>();
+
+  meetings.forEach((meeting) => {
+    const sessionModes = new Map<string, string>();
+
+    if (Array.isArray(meeting.thread)) {
+      meeting.thread.forEach((message) => {
+        if (!message.sessionId) {
+          return;
+        }
+
+        if (!sessionModes.has(message.sessionId)) {
+          sessionModes.set(
+            message.sessionId,
+            message.mode || meeting.mode || "meeting"
+          );
+        }
+      });
+    }
+
+    if (sessionModes.size === 0) {
+      sessionModes.set(meeting.id, meeting.mode || "meeting");
+    }
+
+    sessionModes.forEach((mode, sessionId) => {
+      if (!encounterModes.has(sessionId)) {
+        encounterModes.set(sessionId, mode);
+      }
+    });
+  });
+
+  const modes = Array.from(encounterModes.values());
+
+  return {
+    rowCount: meetings.length,
+    encounterCount: encounterModes.size,
+    meetingCount: modes.filter(
+      (mode) => mode !== "thought" && mode !== "exploration"
+    ).length,
+    thoughtCount: modes.filter((mode) => mode === "thought").length,
+    explorationCount: modes.filter((mode) => mode === "exploration").length,
+  };
 }

@@ -6,8 +6,14 @@ import { supabase } from "@/lib/supabaseClient";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import {
+  getMeetingCountSummary,
+  type NormalizableThreadMessage,
+} from "@/lib/expectumMemoryNormalize";
 
 type MeetingItem = {
+  id: string;
+  thread: NormalizableThreadMessage[] | null;
   mode: string | null;
   created_at: string;
 };
@@ -19,6 +25,7 @@ export default function Statistics() {
     history: 0,
     meetings: 0,
     thoughts: 0,
+    explorations: 0,
     echoes: 0,
     journeyNotices: 0,
     themes: 0,
@@ -46,7 +53,7 @@ export default function Statistics() {
 
     const { data: meetingsData, error: meetingsError } = await supabase
       .from("meetings")
-      .select("mode, created_at")
+      .select("id, thread, mode, created_at")
       .eq("user_id", userId)
       .order("created_at", { ascending: true });
 
@@ -78,11 +85,7 @@ export default function Statistics() {
     }
 
     const meetings = (meetingsData || []) as MeetingItem[];
-
-    const thoughts = meetings.filter((item) => item.mode === "thought").length;
-    const ordinaryMeetings = meetings.filter(
-      (item) => item.mode !== "thought"
-    ).length;
+    const meetingCounts = getMeetingCountSummary(meetings);
 
     const themes = JSON.parse(
       localStorage.getItem(EXPECTUM_STORAGE.detectedThemes) || "[]"
@@ -93,9 +96,10 @@ export default function Statistics() {
     );
 
     setStats({
-      history: meetings.length,
-      meetings: ordinaryMeetings,
-      thoughts,
+      history: meetingCounts.encounterCount,
+      meetings: meetingCounts.meetingCount,
+      thoughts: meetingCounts.thoughtCount,
+      explorations: meetingCounts.explorationCount,
       echoes: echoesCount || 0,
       journeyNotices: journeyNoticesCount || 0,
       themes: themes.length,
@@ -152,6 +156,7 @@ export default function Statistics() {
                 <p>{stats.history} kohtumist</p>
                 <p>{stats.meetings} tavalist kohtumist</p>
                 <p>{stats.thoughts} mõttekohtumist</p>
+                <p>{stats.explorations} avardamist</p>
                 <p>{stats.echoes} salvestatud kaja</p>
                 <p>{stats.journeyNotices} liikumise märkamist</p>
                 <p>{stats.themes} nähtavale tulnud teemat</p>

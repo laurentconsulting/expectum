@@ -9,6 +9,7 @@ import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 import ExpectumCard from "@/components/ExpectumCard";
 import ExpectumButton from "@/components/ExpectumButton";
 import {
+  getMeetingCountSummary,
   normalizeMeetingThreadSnapshots,
   normalizeThreadMessages,
   type NormalizableThreadMessage,
@@ -107,13 +108,13 @@ export default function Journey() {
 
     // Read-time only: preserve source rows while removing exact repeated
     // messages from cumulative snapshots before they enter Journey context.
-    const meetings = normalizeMeetingThreadSnapshots(
-      (meetingsData || []) as MeetingItem[]
-    );
+    const rawMeetings = (meetingsData || []) as MeetingItem[];
+    const meetingCounts = getMeetingCountSummary(rawMeetings);
+    const meetings = normalizeMeetingThreadSnapshots(rawMeetings);
     const echoes = (echoesData || []) as EchoItem[];
     const previousNotices = (noticesData || []) as JourneyNoticeItem[];
 
-    setHistoryCount(meetings.length);
+    setHistoryCount(meetingCounts.encounterCount);
     setKajaCount(echoes.length);
     setPreviousNoticesCount(previousNotices.length);
 
@@ -194,16 +195,20 @@ export default function Journey() {
       const alreadySaved =
         latestNotice &&
         latestNotice.text === text &&
-        latestNotice.history_count === meetings.length &&
+        latestNotice.history_count === meetingCounts.rowCount &&
+        (latestNotice.sessions_count === null ||
+          latestNotice.sessions_count === meetingCounts.encounterCount) &&
         latestNotice.echoes_count === echoes.length;
 
       if (!alreadySaved) {
         const { error } = await supabase.from("journey_notices").insert({
           user_id: userId,
           text,
-          history_count: meetings.length,
+          // Raw rows remain available as technical metadata; user-facing
+          // meeting counts use normalized encounters.
+          history_count: meetingCounts.rowCount,
           echoes_count: echoes.length,
-          sessions_count: sessions.length,
+          sessions_count: meetingCounts.encounterCount,
           created_at: new Date().toISOString(),
         });
 

@@ -817,6 +817,24 @@ implementation PR:
 This completes only the read-time deduplication step. It does not settle the
 meeting storage unit, migrate historical data, or replace local mirrors.
 
+#### Second implementation note — count semantics review
+
+The second implementation step reviews memory counts and normalizes
+user-facing meeting counts at read time:
+
+- Path, Statistics, Journey, and Journey Reflection displays prefer distinct
+  encounter/session identities over raw cumulative meeting rows;
+- Journey retains `history_count` as raw technical row metadata and
+  `sessions_count` as the normalized encounter count;
+- echo, Journey notice, direction, theme, and shared-echo counts remain
+  unchanged because their source-of-truth and event semantics require separate
+  decisions;
+- no source record, schema, prompt, deletion flow, or persistence model is
+  changed.
+
+Whether local theme/shared-submission counts should remain beside remote
+participant counts is **Needs decision**.
+
 ### Phase 2 — AI-context policy
 
 1. Apply active-use filtering.

@@ -7,6 +7,10 @@ import ExpectumCard from "@/components/ExpectumCard";
 import ExpectumSection from "@/components/ExpectumSection";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import { supabase } from "@/lib/supabaseClient";
+import {
+  getMeetingCountSummary,
+  type NormalizableThreadMessage,
+} from "@/lib/expectumMemoryNormalize";
 
 import type { SharedInsight, ThemeItem } from "@/lib/expectumTypes";
 
@@ -14,6 +18,8 @@ type MeetingItem = {
   id: string;
   question: string | null;
   reflection: string | null;
+  thread: NormalizableThreadMessage[] | null;
+  mode: string | null;
   created_at: string;
 };
 
@@ -79,7 +85,7 @@ export default function Path() {
 
     const { data: meetingsData, error: meetingsError } = await supabase
       .from("meetings")
-      .select("id, question, reflection, created_at")
+      .select("id, question, reflection, thread, mode, created_at")
       .eq("user_id", userId)
       .order("created_at", { ascending: false });
 
@@ -116,6 +122,7 @@ export default function Path() {
     }
 
     const meetings = (meetingsData || []) as MeetingItem[];
+    const meetingCounts = getMeetingCountSummary(meetings);
     const echoes = (echoesData || []) as EchoItem[];
     const notices = (noticesData || []) as JourneyNoticeItem[];
     const directions = (directionsData || []) as DirectionItem[];
@@ -136,7 +143,7 @@ export default function Path() {
     setLatestSharedInsight(sharedInsights[0] || null);
 
     setStats({
-      meetings: meetings.length,
+      meetings: meetingCounts.encounterCount,
       echoes: echoes.length,
       notices: notices.length,
       directions: directions.length,
