@@ -130,11 +130,11 @@ export default function JourneyReflections() {
                   </p>
 
                   <p className="mt-6 text-sm text-[#8a8278]">
-                    Kohtumised: {item.history_count || 0} · Salvestatud kaja:{" "}
-                    {item.echoes_count || 0}
+                    Kohtumised:{" "}
                     {typeof item.sessions_count === "number"
-                      ? ` · Kohtumisi eraldi: ${item.sessions_count}`
-                      : ""}
+                      ? item.sessions_count
+                      : item.history_count || 0}{" "}
+                    · Salvestatud kaja: {item.echoes_count || 0}
                   </p>
                 </div>
               ))}
