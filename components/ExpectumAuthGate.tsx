@@ -20,7 +20,9 @@ export default function ExpectumAuthGate({ children }: ExpectumAuthGateProps) {
       const { data } = await supabase.auth.getUser();
 
       if (!data.user) {
-        router.push("/enter");
+        setUser(null);
+        setChecking(false);
+        router.replace("/enter");
         return;
       }
 
@@ -33,7 +35,9 @@ export default function ExpectumAuthGate({ children }: ExpectumAuthGateProps) {
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         if (!session?.user) {
-          router.push("/enter");
+          setUser(null);
+          setChecking(false);
+          router.replace("/return");
           return;
         }
 
