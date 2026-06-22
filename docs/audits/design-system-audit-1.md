@@ -435,6 +435,23 @@ These are implementation candidates only. This audit does not change code.
    - Benefit: aligns with prior product direction.
    - Risk: adding more cards or metrics would increase noise.
 
+## Implementation Note: Symbol Consistency Pass 1.0
+
+The first symbol consistency implementation pass replaced the remaining
+hardcoded user-facing Expectum concept symbols found outside
+`ExpectumSymbol` itself.
+
+- `app/reflection/page.tsx` now uses `ExpectumSymbol` for the reflection thread
+  labels `Kohtumine` and `Aim` instead of hardcoded `○` and `✧` characters.
+- `components/ExpectumSymbol.tsx` remains the intentional source of the symbol
+  characters and their visual balance.
+- No symbol meanings, colors, routes, prompts, Supabase logic, auth, deployment,
+  memory behavior, or visual language were changed.
+
+No additional hardcoded concept-symbol UI instances were found during this
+pass. Future explanatory symbol pages may intentionally keep prose examples
+where replacing them with rendered components would weaken explanation.
+
 ## Recommended Design Finish Pass
 
 A safe future design finish pass should be deliberately small:
