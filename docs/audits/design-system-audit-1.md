@@ -452,6 +452,24 @@ No additional hardcoded concept-symbol UI instances were found during this
 pass. Future explanatory symbol pages may intentionally keep prose examples
 where replacing them with rendered components would weaken explanation.
 
+## Implementation Note: Card and Section Consistency Pass 1.0
+
+The first card/section consistency implementation pass chose the smallest safe
+target from the memory/path overview family: `app/statistics/page.tsx`.
+
+- The statistics summary panel now uses `ExpectumCard` instead of a repeated
+  manual rounded card wrapper.
+- `ExpectumCard` gained a backward-compatible `contentClassName` option so the
+  existing text rhythm can be preserved without changing existing card users.
+- The page's existing border, background, padding, text, data loading behavior,
+  counts, routes, auth, Supabase logic, memory behavior, and visual language
+  were preserved.
+
+Intentional exception: the statistics page header was not converted to
+`ExpectumSection` in this pass because the current `ExpectumSection` spacing is
+not a one-to-one parity match for this page. Forcing the conversion would be a
+layout finish decision rather than an obvious consistency cleanup.
+
 ## Recommended Design Finish Pass
 
 A safe future design finish pass should be deliberately small:

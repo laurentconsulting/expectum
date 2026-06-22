@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabaseClient";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import ExpectumCard from "@/components/ExpectumCard";
 import {
   getMeetingCountSummary,
   type NormalizableThreadMessage,
@@ -148,7 +149,10 @@ export default function Statistics() {
             mida mälu hoiab.
           </p>
 
-          <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-left text-lg leading-relaxed text-[#4f4942]">
+          <ExpectumCard
+            className="rounded-3xl border-[#d7b985] bg-white/45 p-8 backdrop-blur-none"
+            contentClassName="leading-relaxed"
+          >
             {loading ? (
               <p>Mälu jälgede avamine...</p>
             ) : (
@@ -178,7 +182,7 @@ export default function Statistics() {
                 )}
               </div>
             )}
-          </div>
+          </ExpectumCard>
         </section>
       </ExpectumPage>
     </ExpectumAuthGate>
