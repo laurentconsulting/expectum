@@ -6,12 +6,16 @@ import { supabase } from "@/lib/supabaseClient";
 import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
+import {
+  normalizeMeetingThreadSnapshots,
+  type NormalizableThreadMessage,
+} from "@/lib/expectumMemoryNormalize";
 
 type MeetingRow = {
   id: string;
   question: string | null;
   reflection: string | null;
-  thread: unknown[] | null;
+  thread: NormalizableThreadMessage[] | null;
   mode: string | null;
   created_at: string;
 };
@@ -79,7 +83,10 @@ export default function AttunementQuestion() {
       return;
     }
 
-    const history = (meetingsData || []) as MeetingRow[];
+    // Read-time only: source meeting rows and provenance remain unchanged.
+    const history = normalizeMeetingThreadSnapshots(
+      (meetingsData || []) as MeetingRow[]
+    );
     const landmarks = (echoesData || []) as EchoRow[];
     const latestJourney = ((noticesData || []) as JourneyNoticeRow[])[0];
 
