@@ -389,8 +389,12 @@ export default function Reflection() {
   key={`${message.createdAt}-${index}`}
   className="rounded-[2rem] border border-[#efe6d9] bg-white/55 p-8"
 >
-                                    <p className="mb-4 text-xs uppercase tracking-[0.3em] text-[#b78a4a]">
-  {message.role === "user" ? "○ Kohtumine" : "✧ Aim"}
+                                    <p className="mb-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[#b78a4a]">
+  <ExpectumSymbol
+    name={message.role === "user" ? "meeting" : "aim"}
+    size="footer"
+  />
+  <span>{message.role === "user" ? "Kohtumine" : "Aim"}</span>
 </p>
 
 <p className="whitespace-pre-line text-lg leading-loose text-[#4f4942]">
