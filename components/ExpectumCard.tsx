@@ -4,12 +4,14 @@ type ExpectumCardProps = {
   label?: string;
   children: ReactNode;
   className?: string;
+  contentClassName?: string;
 };
 
 export default function ExpectumCard({
   label,
   children,
   className = "",
+  contentClassName = "",
 }: ExpectumCardProps) {
   return (
     <div
@@ -21,7 +23,9 @@ export default function ExpectumCard({
         </p>
       )}
 
-      <div className="whitespace-pre-line text-lg leading-loose text-[#4f4942]">
+      <div
+        className={`whitespace-pre-line text-lg leading-loose text-[#4f4942] ${contentClassName}`}
+      >
         {children}
       </div>
     </div>
