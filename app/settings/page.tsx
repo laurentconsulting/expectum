@@ -7,6 +7,7 @@ import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 import ExpectumButton from "@/components/ExpectumButton";
+import ExpectumCard from "@/components/ExpectumCard";
 
 export default function Settings() {
   const [message, setMessage] = useState("");
@@ -164,19 +165,21 @@ export default function Settings() {
 
           <div className="mt-12 grid gap-4 md:grid-cols-2">
             {memoryLinks.map((item) => (
-              <a
+              <ExpectumCard
                 key={item.href}
                 href={item.href}
+                surface="custom"
                 className={`rounded-3xl border border-[#d7b985] bg-white/45 p-6 text-left transition hover:bg-white/65 ${
                   item.wide ? "md:col-span-2" : ""
                 }`}
+                contentClassName="whitespace-normal leading-normal"
               >
                 <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
                   {item.title}
                 </p>
 
-                <p className="text-[#5f574f]">{item.text}</p>
-              </a>
+                <p className="text-base text-[#5f574f]">{item.text}</p>
+              </ExpectumCard>
             ))}
           </div>
 

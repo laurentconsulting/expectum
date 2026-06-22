@@ -491,6 +491,22 @@ Intentional exceptions:
 - The Timeline page header was not converted to `ExpectumSection` because the
   current spacing is not a one-to-one parity match.
 
+## Implementation Note: Settings Link Card Pass 1.0
+
+The Settings / Mälu link-card implementation used the decision recorded in
+`docs/decisions/settings-link-card-decision.md`.
+
+- `ExpectumCard` now supports an optional `href` prop and renders an anchor when
+  used as a navigation card.
+- `ExpectumCard` also supports `surface="custom"` so link cards can preserve
+  exact existing anchor styling where parity matters.
+- `app/settings/page.tsx` now uses `ExpectumCard` for the mapped Mälu navigation
+  cards while preserving the original `href` targets, labels, descriptions,
+  hover state, grid behavior, and wide Koond layout.
+
+No routes, auth, Supabase logic, prompts, memory clearing behavior, colors,
+visual language, or legacy pages were changed.
+
 ## Recommended Design Finish Pass
 
 A safe future design finish pass should be deliberately small:

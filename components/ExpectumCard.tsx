@@ -5,6 +5,8 @@ type ExpectumCardProps = {
   children: ReactNode;
   className?: string;
   contentClassName?: string;
+  href?: string;
+  surface?: "default" | "custom";
 };
 
 export default function ExpectumCard({
@@ -12,11 +14,17 @@ export default function ExpectumCard({
   children,
   className = "",
   contentClassName = "",
+  href,
+  surface = "default",
 }: ExpectumCardProps) {
-  return (
-    <div
-      className={`rounded-[2rem] border border-[#efe6d9] bg-white/55 px-8 py-10 text-left backdrop-blur-[1px] ${className}`}
-    >
+  const surfaceClassName =
+    surface === "default"
+      ? "rounded-[2rem] border border-[#efe6d9] bg-white/55 px-8 py-10 text-left backdrop-blur-[1px]"
+      : "";
+
+  const cardClassName = `${surfaceClassName} ${className}`;
+  const content = (
+    <>
       {label && (
         <p className="mb-6 text-xs uppercase tracking-[0.3em] text-[#b78a4a]">
           {label}
@@ -28,6 +36,18 @@ export default function ExpectumCard({
       >
         {children}
       </div>
-    </div>
+    </>
+  );
+
+  if (href) {
+    return (
+      <a href={href} className={cardClassName}>
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <div className={cardClassName}>{content}</div>
   );
 }
