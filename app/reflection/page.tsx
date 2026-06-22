@@ -32,7 +32,7 @@ export default function Reflection() {
   const [sharedIds, setSharedIds] = useState<string[]>([]);
 
   const hasGeneratedRef = useRef(false);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const meetingEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const savedQuestion =
@@ -69,9 +69,12 @@ export default function Reflection() {
   }, []);
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+    if (thread.length === 0 && !loading) return;
+
+    meetingEndRef.current?.scrollIntoView({
+      block: "end",
+      behavior: "smooth",
+    });
   }, [thread, loading]);
 
   function getCurrentMode(): ReflectionMode {
@@ -370,39 +373,36 @@ export default function Reflection() {
             </h1>
           </div>
 
-          <div
-  ref={scrollRef}
-  className="mb-8 max-h-[680px] overflow-y-auto rounded-[2rem] border border-[#efe6d9] bg-white/55 p-8 text-left"
->
-            <p className="mb-6 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
+          <div className="mb-8 text-left">
+            <p className="mb-10 text-center text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
               {getModeLabel(currentMode)}
             </p>
 
-                <div className="space-y-10">
-                {thread.map((message, index) => {
+            <div className="space-y-12">
+              {thread.map((message, index) => {
                 const isAssistant = message.role === "assistant";
                 const isSaved = landmarkIds.includes(message.createdAt);
                 const isShared = sharedIds.includes(message.createdAt);
 
                 return (
                   <div
-  key={`${message.createdAt}-${index}`}
-  className="rounded-[2rem] border border-[#efe6d9] bg-white/55 p-8"
->
-                                    <p className="mb-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[#b78a4a]">
-  <ExpectumSymbol
-    name={message.role === "user" ? "meeting" : "aim"}
-    size="footer"
-  />
-  <span>{message.role === "user" ? "Kohtumine" : "Aim"}</span>
-</p>
+                    key={`${message.createdAt}-${index}`}
+                    className="border-l border-[#efe6d9] pl-6 md:pl-8"
+                  >
+                    <p className="mb-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[#b78a4a]">
+                      <ExpectumSymbol
+                        name={message.role === "user" ? "meeting" : "aim"}
+                        size="footer"
+                      />
+                      <span>{message.role === "user" ? "Kohtumine" : "Aim"}</span>
+                    </p>
 
-<p className="whitespace-pre-line text-lg leading-loose text-[#4f4942]">
+                    <p className="whitespace-pre-line text-lg leading-loose text-[#4f4942]">
                       {message.text}
                     </p>
 
                     {isAssistant && (
-                      <div className="mt-5 flex flex-col gap-3 md:flex-row md:flex-wrap">
+                      <div className="mt-6 flex flex-col gap-3 opacity-80 md:flex-row md:flex-wrap">
                         <ExpectumButton
                           onClick={() => toggleLandmark(message, index)}
                           variant="soft"
@@ -428,9 +428,9 @@ export default function Reflection() {
                         )}
 
                         {isShared && (
-  <p className="basis-full text-sm leading-relaxed text-[#8a8278]">
-    ✓ Kaja liigub kinnitamise ootel.
-  </p>
+                          <p className="basis-full text-sm leading-relaxed text-[#8a8278]">
+                            ✓ Kaja liigub kinnitamise ootel.
+                          </p>
                         )}
                       </div>
                     )}
@@ -439,14 +439,15 @@ export default function Reflection() {
               })}
 
               {loading && (
-<div className="rounded-[2rem] border border-[#efe6d9] bg-white/55 p-8">                  <p className="text-lg leading-relaxed text-[#4f4942]">
+                <div className="border-l border-[#efe6d9] pl-6 md:pl-8">
+                  <p className="text-lg leading-relaxed text-[#4f4942]">
                     Kohtumine avaneb...
                   </p>
                 </div>
               )}
 
               {!loading && count < 3 && (
-                <div className="border-t border-[#e1c99b] pt-6">
+                <div className="pt-4">
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
                     Kohtumine jätkub
                   </p>
@@ -467,7 +468,7 @@ export default function Reflection() {
               )}
 
               {!loading && count >= 3 && (
-                <div className="border-t border-[#e1c99b] pt-6">
+                <div className="pt-4">
                   <p className="mb-4 text-lg leading-relaxed text-[#4f4942]">
                     Kõik ei avane järgmise küsimusega. Vahel avaneb midagi
                     pausis.
@@ -479,6 +480,8 @@ export default function Reflection() {
                   </p>
                 </div>
               )}
+
+              <div ref={meetingEndRef} />
             </div>
           </div>
 
