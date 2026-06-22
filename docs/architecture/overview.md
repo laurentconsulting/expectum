@@ -14,10 +14,10 @@ Expectum is a single Next.js application containing:
 - OpenAI-backed reflection and noticing flows;
 - a hidden shared-insight administration page.
 
-The browser renders the page UI, stores transient and compatibility data in
-`localStorage`, and uses the Supabase browser client for authentication and
-participant-owned data. Next.js route handlers call OpenAI and perform
-service-role Supabase operations.
+The browser renders the page UI, stores active-flow, derived, and compatibility
+data in `localStorage`, and uses the Supabase browser client for authentication
+and participant-associated records. Next.js route handlers call OpenAI and
+perform service-role Supabase operations.
 
 ```text
 Browser
@@ -79,7 +79,7 @@ encoded in component utility classes.
 
 ## Supabase
 
-Supabase provides:
+In the current code, Supabase provides:
 
 - email/password authentication;
 - browser-side access to participant records;
@@ -92,7 +92,9 @@ Two clients exist:
 
 Route-level authorization is mostly enforced in client components through
 `ExpectumAuthGate`. Database Row Level Security policies and the complete SQL
-schema are not present in this repository. **Needs verification.**
+schema are not present in this repository. The intended authoritative
+source-of-truth boundary between Supabase and local storage is also **Needs
+verification**.
 
 ## OpenAI
 
