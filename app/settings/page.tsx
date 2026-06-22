@@ -116,6 +116,12 @@ export default function Settings() {
       text: "Vaikne ülevaade sellest, mida Mälu hoiab.",
       wide: true,
     },
+    {
+      href: "/profile",
+      title: "Teekonna profiil",
+      text: "Vaikne koond sellest, mis teekonnas nähtavale on tulnud.",
+      wide: true,
+    },
   ];
 
   return (

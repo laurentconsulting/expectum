@@ -133,7 +133,7 @@ export default function AttunementQuestion() {
           },
           {
             href: "/expectum",
-            label: "Expectum?",
+            label: "Expectum",
             symbol: "aim",
           },
         ]}
