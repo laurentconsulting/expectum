@@ -8,14 +8,13 @@ import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 import ExpectumCard from "@/components/ExpectumCard";
 import ExpectumButton from "@/components/ExpectumButton";
+import {
+  normalizeMeetingThreadSnapshots,
+  normalizeThreadMessages,
+  type NormalizableThreadMessage,
+} from "@/lib/expectumMemoryNormalize";
 
-type StoredMessage = {
-  role?: "user" | "assistant";
-  text?: string;
-  sessionId?: string;
-  mode?: string;
-  createdAt?: string;
-};
+type StoredMessage = NormalizableThreadMessage;
 
 type MeetingItem = {
   id: string;
@@ -106,7 +105,11 @@ export default function Journey() {
       return;
     }
 
-    const meetings = (meetingsData || []) as MeetingItem[];
+    // Read-time only: preserve source rows while removing exact repeated
+    // messages from cumulative snapshots before they enter Journey context.
+    const meetings = normalizeMeetingThreadSnapshots(
+      (meetingsData || []) as MeetingItem[]
+    );
     const echoes = (echoesData || []) as EchoItem[];
     const previousNotices = (noticesData || []) as JourneyNoticeItem[];
 
@@ -155,7 +158,10 @@ export default function Journey() {
       });
     });
 
-    const sessions = Array.from(sessionsMap.values());
+    const sessions = Array.from(sessionsMap.values()).map((session) => ({
+      ...session,
+      messages: normalizeThreadMessages(session.messages),
+    }));
 
     if (meetings.length === 0 && echoes.length === 0) {
       setJourney("Liikumise märkamiseks ei ole veel piisavalt kohtumisi.");

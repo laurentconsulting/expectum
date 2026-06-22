@@ -8,6 +8,10 @@ import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 import ExpectumButton from "@/components/ExpectumButton";
+import {
+  normalizeMeetingThreadSnapshots,
+  normalizeThreadMessages,
+} from "@/lib/expectumMemoryNormalize";
 
 type MeetingMode = "meeting" | "thought" | "exploration";
 
@@ -84,7 +88,10 @@ export default function History() {
       return;
     }
 
-    const meetings = (data || []) as MeetingRow[];
+    // Read-time only: cumulative source rows remain unchanged in Supabase.
+    const meetings = normalizeMeetingThreadSnapshots(
+      (data || []) as MeetingRow[]
+    );
     const sessionMap = new Map<string, SessionGroup>();
 
     meetings.forEach((item) => {
@@ -128,30 +135,17 @@ export default function History() {
 
         if (!group) return;
 
-        const alreadyExists = group.messages.some(
-          (existing) =>
-            existing.role === message.role &&
-            existing.text === message.text &&
-            existing.createdAt === message.createdAt
-        );
-
-        if (!alreadyExists) {
-          group.messages.push({
-            ...message,
-            mode: message.mode || item.mode || "meeting",
-          });
-        }
+        group.messages.push({
+          ...message,
+          mode: message.mode || item.mode || "meeting",
+        });
       });
     });
 
     const groupedSessions = Array.from(sessionMap.values())
       .map((session) => ({
         ...session,
-        messages: session.messages.sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() -
-            new Date(b.createdAt).getTime()
-        ),
+        messages: normalizeThreadMessages(session.messages),
       }))
       .sort(
         (a, b) =>

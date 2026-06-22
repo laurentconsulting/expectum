@@ -8,12 +8,16 @@ import ExpectumSection from "@/components/ExpectumSection";
 import ExpectumButton from "@/components/ExpectumButton";
 import { EXPECTUM_STORAGE } from "@/lib/expectumStorage";
 import { supabase } from "@/lib/supabaseClient";
+import {
+  normalizeMeetingThreadSnapshots,
+  type NormalizableThreadMessage,
+} from "@/lib/expectumMemoryNormalize";
 
 type MeetingItem = {
   id: string;
   question: string | null;
   reflection: string | null;
-  thread: unknown[] | null;
+  thread: NormalizableThreadMessage[] | null;
   mode: string | null;
   created_at: string;
 };
@@ -94,7 +98,11 @@ export default function Trajectory() {
       return;
     }
 
-    const history = (meetingsData || []) as MeetingItem[];
+    // Read-time only: repeated snapshot messages are removed from the
+    // trajectory context without changing or deleting stored meeting rows.
+    const history = normalizeMeetingThreadSnapshots(
+      (meetingsData || []) as MeetingItem[]
+    );
     const landmarks = (echoesData || []) as EchoItem[];
     const journeyReflections = (noticesData || []) as JourneyNoticeItem[];
 

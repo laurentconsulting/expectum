@@ -801,6 +801,22 @@ No destructive migration.
 This is the smallest safe behavioral refactor because it reduces duplication
 without rewriting stored history.
 
+#### Implementation note
+
+The first read-time normalization step is implemented in the initial
+implementation PR:
+
+- exact duplicate thread messages are identified by role, text, timestamp,
+  session, and mode;
+- messages without a timestamp are preserved;
+- History assembly and meeting-thread AI context use normalized copies;
+- chronological order and provenance fields are preserved;
+- Supabase source rows, local persistence, counts, prompts, and deletion
+  behavior remain unchanged.
+
+This completes only the read-time deduplication step. It does not settle the
+meeting storage unit, migrate historical data, or replace local mirrors.
+
 ### Phase 2 — AI-context policy
 
 1. Apply active-use filtering.
