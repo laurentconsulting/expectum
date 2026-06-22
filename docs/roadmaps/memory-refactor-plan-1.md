@@ -835,6 +835,21 @@ user-facing meeting counts at read time:
 Whether local theme/shared-submission counts should remain beside remote
 participant counts is **Needs decision**.
 
+#### Third implementation note — Timeline normalization
+
+The third implementation step aligns Timeline with the encounter-oriented
+read model:
+
+- cumulative meeting rows are grouped by session identity at read time;
+- one meeting item is shown for each identifiable encounter;
+- the first participant message and earliest available timestamp represent the
+  encounter in Timeline;
+- rows without session provenance remain separate instead of being merged by
+  guesswork;
+- echoes, Journey notices, and saved directions remain unchanged;
+- source records, schema, prompts, deletion behavior, and visual design remain
+  unchanged.
+
 ### Phase 2 — AI-context policy
 
 1. Apply active-use filtering.

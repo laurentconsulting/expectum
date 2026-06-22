@@ -28,6 +28,19 @@ export type MeetingCountSummary = {
   explorationCount: number;
 };
 
+export type TimelineMeetingSnapshot<
+  TMessage extends NormalizableThreadMessage = NormalizableThreadMessage,
+> = CountableMeetingSnapshot<TMessage> & {
+  question?: string | null;
+};
+
+export type MeetingEncounterSummary = {
+  encounterId: string;
+  text: string;
+  mode: string;
+  createdAt: string;
+};
+
 function getMessageIdentity(message: NormalizableThreadMessage) {
   if (!message.role || typeof message.text !== "string" || !message.createdAt) {
     return null;
@@ -203,4 +216,86 @@ export function getMeetingCountSummary<
     thoughtCount: modes.filter((mode) => mode === "thought").length,
     explorationCount: modes.filter((mode) => mode === "exploration").length,
   };
+}
+
+/**
+ * Creates one read-time Timeline summary per encounter/session. Cumulative
+ * source rows remain unchanged. Rows without session provenance are preserved
+ * separately by their row ID instead of being merged speculatively.
+ */
+export function getMeetingEncounterSummaries<
+  TMessage extends NormalizableThreadMessage,
+  TMeeting extends TimelineMeetingSnapshot<TMessage>,
+>(meetings: readonly TMeeting[]): MeetingEncounterSummary[] {
+  const encounters = new Map<
+    string,
+    {
+      fallbackText: string;
+      fallbackCreatedAt: string;
+      mode: string;
+      messages: TMessage[];
+    }
+  >();
+  const chronologicalMeetings = [...meetings].sort(
+    (a, b) => Date.parse(a.created_at) - Date.parse(b.created_at)
+  );
+
+  chronologicalMeetings.forEach((meeting) => {
+    const messagesBySession = new Map<string, TMessage[]>();
+
+    if (Array.isArray(meeting.thread)) {
+      meeting.thread.forEach((message) => {
+        if (!message.sessionId) {
+          return;
+        }
+
+        const messages = messagesBySession.get(message.sessionId) || [];
+        messages.push({ ...message });
+        messagesBySession.set(message.sessionId, messages);
+      });
+    }
+
+    if (messagesBySession.size === 0) {
+      messagesBySession.set(meeting.id, []);
+    }
+
+    messagesBySession.forEach((messages, encounterId) => {
+      const existing = encounters.get(encounterId);
+
+      encounters.set(encounterId, {
+        fallbackText:
+          existing?.fallbackText || meeting.question || "",
+        fallbackCreatedAt:
+          existing?.fallbackCreatedAt || meeting.created_at,
+        mode:
+          existing?.mode ||
+          messages.find((message) => message.mode)?.mode ||
+          meeting.mode ||
+          "meeting",
+        messages: normalizeThreadMessages([
+          ...(existing?.messages || []),
+          ...messages,
+        ]),
+      });
+    });
+  });
+
+  return Array.from(encounters.entries()).map(([encounterId, encounter]) => {
+    const firstUserMessage = encounter.messages.find(
+      (message) => message.role === "user" && message.text
+    );
+    const firstTimestampedMessage = encounter.messages.find(
+      (message) => message.createdAt
+    );
+
+    return {
+      encounterId,
+      text: firstUserMessage?.text || encounter.fallbackText,
+      mode: firstUserMessage?.mode || encounter.mode,
+      createdAt:
+        firstUserMessage?.createdAt ||
+        firstTimestampedMessage?.createdAt ||
+        encounter.fallbackCreatedAt,
+    };
+  });
 }
