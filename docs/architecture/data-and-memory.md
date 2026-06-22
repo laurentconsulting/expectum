@@ -1,8 +1,10 @@
 # Data and memory
 
-Expectum currently uses both Supabase and browser `localStorage`. Supabase is
-the durable participant/shared-data layer; local storage supports active
-meeting state, local mirrors, derived views, and legacy compatibility.
+Expectum currently uses both Supabase and browser `localStorage`. The code uses
+Supabase for participant-associated and shared records, while local storage
+supports active meeting state, local mirrors, derived views, and legacy
+compatibility. Which store is authoritative for every data category is
+**Needs verification**.
 
 ## Supabase clients
 
@@ -19,8 +21,8 @@ policies are not tracked in this repository. **Needs verification.**
 | Table | Purpose inferred from code | Main fields referenced |
 | --- | --- | --- |
 | `profiles` | Minimal participant profile created/upserted after sign-in or registration | `id`, `email` |
-| `meetings` | Saved meeting questions, reflections, thread, mode, session, and timestamps | `id`, `user_id`, `question`, `reflection`, `thread`, `mode`, `session_id`, `created_at` |
-| `echoes` | Participant-saved echoes/landmarks from reflections | `id`, `user_id`, `text`, `question`, `thread`, `created_at` |
+| `meetings` | Saved meeting questions, reflections, thread, mode, and timestamps | `id`, `user_id`, `question`, `reflection`, `thread`, `mode`, `created_at` |
+| `echoes` | Participant-saved echoes/landmarks from reflections | `id`, `user_id`, `text`, `question`, `created_at` |
 | `journey_notices` | Stored journey-level noticing with source-count metadata | `id`, `user_id`, `text`, `history_count`, `echoes_count`, `sessions_count`, `created_at` |
 | `directions` | Saved trajectory/direction notices | `id`, `user_id`, `text`, `created_at` |
 | `shared_insights` | Submitted and approved echoes for the collective space | `id`, `question`, `text`, `question_count`, `approved`, `created_at` |
