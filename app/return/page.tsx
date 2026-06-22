@@ -11,6 +11,16 @@ export default function ReturnRoom() {
           label: "Expectum",
           symbol: "aim",
         },
+        {
+          href: "/symbols",
+          label: "Sümbolid",
+          symbol: "echo",
+        },
+        {
+          href: "/aim",
+          label: "Aim",
+          symbol: "aim",
+        },
       ]}
     >
       <section className="mx-auto w-full max-w-3xl text-center">
@@ -20,18 +30,18 @@ export default function ReturnRoom() {
         </p>
 
         <h1 className="mb-10 text-4xl font-light leading-tight md:text-6xl">
-          Kohtumine võib puhata.
+          Kohtumine võib korraks puhata.
         </h1>
 
         <p className="mb-12 text-lg leading-relaxed text-[#5f574f] md:text-2xl">
-          Mõnikord vajab küsimus aega. Mõnikord vajab vaikust ka inimene.
+          Ruum jääb avatuks. Küsimus võib vaikselt edasi kõlada.
         </p>
 
         <div className="rounded-3xl border border-[#d7b985] bg-white/45 p-8 text-lg leading-relaxed text-[#4f4942]">
-          <p className="mb-6">Teekonna jäljed on hoitud.</p>
+          <p className="mb-6">Jäljed jäävad teekonda toetama.</p>
 
           <p>
-            Kui soovid, võid kohtumise hiljem uuesti avada.
+            Kui hetk on õige, saab kohtumise uuesti avada.
           </p>
         </div>
 
@@ -46,7 +56,7 @@ export default function ReturnRoom() {
         </div>
 
         <p className="mt-20 text-sm text-[#8a8278]">
-          Kõik ei pea avanema korraga.
+          Kõik ei pea avanema korraga. Tagasi võib tulla aeglaselt.
         </p>
       </section>
     </ExpectumPage>
