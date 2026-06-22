@@ -5,6 +5,10 @@ import ExpectumPage from "@/components/ExpectumPage";
 import ExpectumSymbol from "@/components/ExpectumSymbol";
 import ExpectumAuthGate from "@/components/ExpectumAuthGate";
 import { supabase } from "@/lib/supabaseClient";
+import {
+  getMeetingEncounterSummaries,
+  type NormalizableThreadMessage,
+} from "@/lib/expectumMemoryNormalize";
 
 type TimelineItem = {
   type: "meeting" | "echo" | "notice" | "direction";
@@ -16,6 +20,7 @@ type TimelineItem = {
 type MeetingRow = {
   id: string;
   question: string | null;
+  thread: NormalizableThreadMessage[] | null;
   mode: string | null;
   created_at: string;
 };
@@ -61,7 +66,7 @@ export default function Timeline() {
 
     const { data: meetingsData, error: meetingsError } = await supabase
       .from("meetings")
-      .select("id, question, mode, created_at")
+      .select("id, question, thread, mode, created_at")
       .eq("user_id", userId);
 
     const { data: echoesData, error: echoesError } = await supabase
@@ -93,16 +98,19 @@ export default function Timeline() {
     }
 
     const meetings = (meetingsData || []) as MeetingRow[];
+    // Read-time only: cumulative meeting rows are grouped into encounter
+    // summaries. Source records and non-meeting Timeline items stay unchanged.
+    const meetingEncounters = getMeetingEncounterSummaries(meetings);
     const echoes = (echoesData || []) as EchoRow[];
     const notices = (noticesData || []) as NoticeRow[];
     const directions = (directionsData || []) as DirectionRow[];
 
     const timelineItems: TimelineItem[] = [
-      ...meetings.map((item) => ({
+      ...meetingEncounters.map((item) => ({
         type: "meeting" as const,
         title: item.mode === "thought" ? "Mõttekohtumine" : "Kohtumine",
-        text: item.question || "",
-        createdAt: item.created_at,
+        text: item.text,
+        createdAt: item.createdAt,
       })),
 
       ...echoes.map((item) => ({
