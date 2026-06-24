@@ -13,6 +13,16 @@ const defaultLinks: ExpectumFooterLink[] = [
     label: "Expectum",
     symbol: "aim",
   },
+  {
+    href: "/symbols",
+    label: "Sümbolid",
+    symbol: "echo",
+  },
+  {
+    href: "/aim",
+    label: "Aim",
+    symbol: "aim",
+  },
 ];
 
 export default function ExpectumFooter({

@@ -78,6 +78,16 @@ function EnterContent() {
           label: "Expectum",
           symbol: "aim",
         },
+        {
+          href: "/symbols",
+          label: "Sümbolid",
+          symbol: "echo",
+        },
+        {
+          href: "/aim",
+          label: "Aim",
+          symbol: "aim",
+        },
       ]}
     >
       <section className="mx-auto w-full max-w-3xl text-center">
