@@ -23,18 +23,8 @@ export default function Home() {
       footerLinks={[
         {
           href: "/expectum",
-          label: "Tutvu Expectumiga",
+          label: "Expectum",
           symbol: "aim",
-        },
-        {
-          href: "/expectum-language",
-          label: "Keel",
-          symbol: "theme",
-        },
-        {
-          href: "/symbols",
-          label: "Sümbolid",
-          symbol: "echo",
         },
       ]}
     >
@@ -62,33 +52,21 @@ export default function Home() {
           Aim ei määra tähendust. Ta hoiab ruumi kohtumisele.
         </p>
 
-        <div className="flex flex-col flex-wrap justify-center gap-4 md:flex-row">
-          {signedIn ? (
-            <>
-              <ExpectumButton href="/attunement">
-                Ava kohtumine
-              </ExpectumButton>
+        {signedIn && (
+          <div className="flex flex-col flex-wrap justify-center gap-4 md:flex-row">
+            <ExpectumButton href="/attunement">
+              Ava kohtumine
+            </ExpectumButton>
 
-              <ExpectumButton href="/question?mode=exploration">
-                Ava avardamine
-              </ExpectumButton>
+            <ExpectumButton href="/question?mode=exploration">
+              Ava avardamine
+            </ExpectumButton>
 
-              <ExpectumButton href="/path" variant="soft">
-                Vaata teekonda
-              </ExpectumButton>
-            </>
-          ) : (
-            <>
-              <ExpectumButton href="/enter">
-                Ava kohtumine
-              </ExpectumButton>
-
-              <ExpectumButton href="/enter" variant="soft">
-                Sisene
-              </ExpectumButton>
-            </>
-          )}
-        </div>
+            <ExpectumButton href="/path" variant="soft">
+              Vaata teekonda
+            </ExpectumButton>
+          </div>
+        )}
 
         <p className="mt-20 text-sm text-[#8a8278]">
           Alustada võib sellest, mis Sind puudutab.
