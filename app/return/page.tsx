@@ -45,16 +45,6 @@ export default function ReturnRoom() {
           </p>
         </div>
 
-        <div className="mt-12 flex flex-col justify-center gap-4 md:flex-row">
-          
-          <a
-            href="/"
-            className="rounded-full border border-[#d8d1c7] px-8 py-4 text-sm uppercase tracking-[0.25em] text-[#6d655d] transition hover:bg-[#f1ebe3]"
-          >
-            Algusesse
-          </a>
-        </div>
-
         <p className="mt-20 text-sm text-[#8a8278]">
           Kõik ei pea avanema korraga. Tagasi võib tulla aeglaselt.
         </p>
