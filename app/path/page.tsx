@@ -158,7 +158,7 @@ export default function Path() {
       <ExpectumPage
         footerLinks={[
           { href: "/journey", label: "Liikumise märkamine", symbol: "path" },
-          { href: "/settings", label: "Mälu", symbol: "memory" },
+          { href: "/trajectory", label: "Suund", symbol: "direction" },
           {
             href: "/attunement-question",
             label: "Vaikne küsimus",
