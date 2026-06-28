@@ -23,14 +23,14 @@ type ExpectumSymbolConfig = {
 
 const baseSizes: Record<ExpectumSymbolSize, number> = {
   header: 1,
-  footer: 1,
+  footer: 0.92,
   card: 1.9,
   hero: 4,
 };
 
 const widths: Record<ExpectumSymbolSize, string> = {
   header: "w-[1.25rem]",
-  footer: "w-[1.25rem]",
+  footer: "w-[1.15rem]",
   card: "w-12",
   hero: "w-20",
 };
@@ -94,9 +94,11 @@ export default function ExpectumSymbol({
     <span
       className={`
         inline-flex
+        shrink-0
         items-center
         justify-center
         leading-none
+        text-center
         text-[#b78a4a]
         ${widths[size]}
         ${item.balance}
