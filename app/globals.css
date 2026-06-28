@@ -35,11 +35,60 @@ body {
   animation: expectumBackgroundBreath 24s ease-in-out infinite;
   animation-delay: 6s;
 }
+
+@keyframes expectumQuietArrival {
+  0% {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.expectum-arrival-step {
+  opacity: 0;
+  animation: expectumQuietArrival 1.2s ease-out forwards;
+}
+
+.expectum-arrival-delay-1 {
+  animation-delay: 120ms;
+}
+
+.expectum-arrival-delay-2 {
+  animation-delay: 320ms;
+}
+
+.expectum-arrival-delay-3 {
+  animation-delay: 560ms;
+}
+
+.expectum-arrival-delay-4 {
+  animation-delay: 820ms;
+}
+
+.expectum-arrival-delay-5 {
+  animation-delay: 1080ms;
+}
+
+.expectum-arrival-delay-6 {
+  animation-delay: 1340ms;
+}
+
+.expectum-arrival-delay-7 {
+  animation-delay: 1600ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .expectum-background-breath,
   .expectum-background-breath-delayed,
   .expectum-breathing,
-  .expectum-soft-pulse {
+  .expectum-soft-pulse,
+  .expectum-arrival-step {
     animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
