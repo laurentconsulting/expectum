@@ -449,19 +449,19 @@ export default function Reflection() {
               {!loading && count < 3 && (
                 <div className="pt-4">
                   <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#b78a4a]">
-                    Kohtumine jätkub
+                    Kirjutan siia
                   </p>
 
                   <textarea
                     value={followUp}
                     onChange={(event) => setFollowUp(event.target.value)}
                     className="min-h-36 w-full rounded-[1.75rem] border border-[#efe6d9] bg-white/55 p-6 text-lg leading-loose text-[#4f4942] outline-none transition duration-500 placeholder:text-[#a7a097] focus:border-[#eadcc7] focus:bg-white/70"
-                    placeholder="Kirjuta siia, kui kohtumine jätkub..."
+                    placeholder="Kirjuta siia, kui midagi tahab veel nähtavale tulla..."
                   />
 
                   <div className="mt-6">
                     <ExpectumButton onClick={sendFollowUp}>
-                      Jätka kohtumist
+                      Saada
                     </ExpectumButton>
                   </div>
                 </div>
