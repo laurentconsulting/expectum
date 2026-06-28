@@ -85,13 +85,8 @@ export default function ExpectumHeader() {
       <div className="mx-auto flex max-w-6xl flex-col items-center">
         <a
           href="/"
-          className="expectum-breathing inline-flex items-center gap-3 text-sm uppercase tracking-[0.55em] text-[#8b642f] transition-opacity duration-500 hover:opacity-70"
+          className="expectum-breathing inline-flex items-center text-sm uppercase tracking-[0.55em] text-[#8b642f] transition-opacity duration-500 hover:opacity-70"
         >
-          <ExpectumSymbol
-            name="aim"
-            size="header"
-          />
-
           <span>Expectum</span>
         </a>
 
