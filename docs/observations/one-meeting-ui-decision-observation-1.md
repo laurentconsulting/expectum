@@ -361,19 +361,35 @@ Before any implementation:
 
 The smallest natural next embodiment is still not implementation.
 
-It is a participant-facing mode-surface map:
+It is:
 
-- list every visible mode surface;
-- classify each as active choice, provenance, memory label, statistic, or
-  prompt context;
-- mark which must remain visible and which could become internal later.
+> ONE MEETING PARTICIPANT AGENCY DECISION OBSERVATION 1.0
 
-Only after that should a copy-only implementation candidate be considered.
+Documentation-only.
 
-If a code PR later becomes approved, the smallest possible candidate would be a
-copy/navigation-only pass on one visible surface, likely the signed-in homepage
-or `app/question/page.tsx`, with no prompt, storage, route, Supabase, memory, or
-styling change.
+Its single question should be:
+
+> How can the participant remain a visible co-author of the encounter’s
+> movement without having to choose a function before the encounter begins?
+
+This future observation should examine only:
+
+- participant initiation;
+- participant consent;
+- participant ability to remain quiet;
+- participant ability to ask for more thought;
+- participant ability to open wider;
+- Aim non-centrality;
+- whether movement can emerge without hidden Aim authority.
+
+It must not:
+
+- redesign the interface;
+- invent new terminology;
+- select copy;
+- remove modes;
+- change storage or prompts;
+- authorize implementation.
 
 This is not authorization to implement.
 
@@ -413,6 +429,15 @@ selection.
 
 ## Smallest Natural Next Embodiment
 
-The smallest natural next embodiment is a mode-surface map, not a UI change.
+The smallest natural next embodiment is:
+
+> ONE MEETING PARTICIPANT AGENCY DECISION OBSERVATION 1.0
+
+Its single question:
+
+> How can the participant remain a visible co-author of the encounter’s
+> movement without having to choose a function before the encounter begins?
+
+This is still observation, not implementation.
 
 Viibime.
